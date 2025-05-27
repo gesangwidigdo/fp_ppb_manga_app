@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "340678380606",
+    "project_id": "fp-ppb-manga-app",
+    "storage_bucket": "fp-ppb-manga-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340678380606:android:ef799a794c3399dcc7956f",
+        "android_client_info": {
+          "package_name": "com.example.fp_ppb_manga_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-G0dbODH056DGfE6sXYbwAu5cFf_uaBw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
