@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="fp_ppb_manga_app"
+        android:label="OtakuLib"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
