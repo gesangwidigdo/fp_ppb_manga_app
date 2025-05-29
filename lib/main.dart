@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/firebase_options.dart';
+import 'package:fp_ppb_manga_app/pages/root.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,12 +16,26 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MaterialApp(
+      title: 'OtakuLib',
+      // debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFF202939),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF181E2A),
+          centerTitle: true,
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Color(0xFF181E2A),
+          selectedItemColor: Color(0xFFD9D9D9),
+          unselectedItemColor: Color(0xFFD9D9D9),
+          type: BottomNavigationBarType.fixed,
         ),
       ),
+      home: RootPage(),
+      routes: {
+
+      },
     );
   }
 }
