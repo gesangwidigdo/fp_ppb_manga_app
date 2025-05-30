@@ -23,7 +23,6 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFF202939),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF181E2A),
-          centerTitle: true,
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF181E2A),

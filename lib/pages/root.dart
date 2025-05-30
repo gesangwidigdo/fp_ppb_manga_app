@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/pages/home.dart';
+import 'package:fp_ppb_manga_app/pages/profile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RootPage extends StatefulWidget {
@@ -13,12 +14,32 @@ class _RootPageState extends State<RootPage> {
   int _currentIndex = 0;
   final _pages = const [
     HomePage(),
+    HomePage(), // Placeholder for Search User page
+    ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        leading: _currentIndex == 2 ? InkWell(
+          onTap: () {
+            setState(() {
+              _currentIndex = 0;
+            });
+          },
+          highlightColor: Colors.transparent,
+          splashFactory: NoSplash.splashFactory,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24),
+            child: Image.asset(
+              'assets/icons/left_arrow.png',
+              width: 36,
+              height: 36,
+            ),
+          ),
+        ) : null,
         title: Text(
           'OtakuLib',
           style: TextStyle(
@@ -28,7 +49,7 @@ class _RootPageState extends State<RootPage> {
             fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
         ),
-        actions: _currentIndex == 0 || _currentIndex != 1 ? [
+        actions: _currentIndex != 2 ? [
           InkWell(
             onTap: () {
               debugPrint('Search icon tapped');
