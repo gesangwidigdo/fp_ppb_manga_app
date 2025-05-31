@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _topMangaFuture = TopMangaService().fetchTopManga();
+    _topMangaFuture = MangaService().fetchTopManga();
   }
 
   @override

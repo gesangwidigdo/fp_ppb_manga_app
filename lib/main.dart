@@ -20,6 +20,7 @@ class MainApp extends StatelessWidget {
       title: 'OtakuLib',
       // debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        colorSchemeSeed: Color(0xFF1D4ED7),
         scaffoldBackgroundColor: const Color(0xFF202939),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF181E2A),
@@ -32,9 +33,6 @@ class MainApp extends StatelessWidget {
         ),
       ),
       home: RootPage(),
-      routes: {
-
-      },
     );
   }
 }

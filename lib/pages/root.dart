@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/pages/home.dart';
 import 'package:fp_ppb_manga_app/pages/profile.dart';
+import 'package:fp_ppb_manga_app/pages/search.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RootPage extends StatefulWidget {
@@ -11,24 +12,45 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
+  late FocusNode _searchFocusNode;
+
   int _currentIndex = 0;
   final _pages = const [
     HomePage(),
-    HomePage(), // Placeholder for Search User page
+    HomePage(),
     ProfilePage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchFocusNode = FocusNode();
+    _searchFocusNode.addListener(() {
+      if (!_searchFocusNode.hasFocus && _isSearching) {
+        setState(() {
+          _isSearching = false;
+          _searchController.clear();
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading: _currentIndex == 2 ? InkWell(
-          onTap: () {
-            setState(() {
-              _currentIndex = 0;
-            });
-          },
+        leading: _isSearching ? null : (_currentIndex == 2 ? InkWell(
+          onTap: () => setState(() => _currentIndex = 0),
           highlightColor: Colors.transparent,
           splashFactory: NoSplash.splashFactory,
           child: Padding(
@@ -39,8 +61,42 @@ class _RootPageState extends State<RootPage> {
               height: 36,
             ),
           ),
-        ) : null,
-        title: Text(
+        ) : null),
+        title: _isSearching ? SizedBox(
+          height: 40,
+          child: TextField(
+            controller: _searchController,
+            focusNode: _searchFocusNode,
+            autofocus: true,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.zero,
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.white70,
+              ),
+              hintText: 'Search...',
+              hintStyle: TextStyle(
+                color: Colors.white70,
+                fontFamily: GoogleFonts.montserrat().fontFamily,
+              ),
+              filled: true,
+              fillColor: const Color(0xFF2A2E3D),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.white70),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.white70),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
+        ) : Text(
           'OtakuLib',
           style: TextStyle(
             fontSize: 24,
@@ -49,23 +105,43 @@ class _RootPageState extends State<RootPage> {
             fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
         ),
-        actions: _currentIndex != 2 ? [
+        actions: _isSearching ? [
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: TextButton(
+              onPressed: () => setState(() {
+                _isSearching = false;
+                _searchController.clear();
+              }),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: GoogleFonts.montserrat().fontFamily,
+                )
+              ),
+            ),
+          ),
+        ] : (_currentIndex != 2  ? [
           InkWell(
             onTap: () {
-              debugPrint('Search icon tapped');
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => SearchPage(currentIndex: _currentIndex,),
+              ));
             },
             highlightColor: Colors.transparent,
             splashFactory: NoSplash.splashFactory,
             child: Padding(
-              padding: const EdgeInsets.only(right: 24),
+              padding: EdgeInsets.only(right: 24),
               child: Image.asset(
                 'assets/icons/search.png',
                 width: 36,
                 height: 36,
               ),
             ),
-          ) 
-        ] : [],
+          ),
+        ]
+      : []),
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: Theme(
