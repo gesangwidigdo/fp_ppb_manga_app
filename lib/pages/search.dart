@@ -70,11 +70,13 @@ class _SearchPageState extends State<SearchPage> {
           itemCount: results.length,
           separatorBuilder: (_, __) => const SizedBox(height: 8.0),
           itemBuilder: (context, i) {
-            final m = results[i];
-            return SearchResult(
-              name: m.title,
-              imageUrl: m.imageUrl,
-            );
+            final res = results[i];
+            return widget.currentIndex == 0 ? SearchResult(
+              currentIndex: widget.currentIndex,
+              id: res.id,
+              name: res.title,
+              imageUrl: res.imageUrl,
+            ) : null ;
           },
         );
       },
@@ -125,7 +127,6 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               onSubmitted: (query) {
-                debugPrint('================= Index: ${widget.currentIndex}');
                 if (query.trim().isNotEmpty) {
                   setState(() => _searchFuture = _mangaService.searchManga(query));
                 }

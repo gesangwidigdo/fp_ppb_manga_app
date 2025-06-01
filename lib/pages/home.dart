@@ -24,11 +24,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
     final imageHeight = itemWidth * 1.42;
-    final totalItemHeight = imageHeight + 2 + 16 + 4 + 17;
+    final totalItemHeight = imageHeight * 1.2;
 
     return Scaffold(
       backgroundColor: Color(0xFF202939),
       body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.only(
             top: 24.0,
@@ -80,9 +81,9 @@ class _HomePageState extends State<HomePage> {
                   }
                   
                   return GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: mangas.length,
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8.0,
@@ -92,6 +93,7 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context, index) {
                       final manga = mangas[index];
                       return HomeManga(
+                        id: manga.id,
                         title: manga.title,
                         imageUrl: manga.imageUrl,
                         chapters: manga.chapters,

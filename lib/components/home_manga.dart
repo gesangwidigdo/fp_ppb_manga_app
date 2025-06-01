@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/components/add_review.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeManga extends StatelessWidget {
+  final int id;
   final String title;
   final String? imageUrl;
   final int? chapters;
@@ -9,6 +11,7 @@ class HomeManga extends StatelessWidget {
 
   const HomeManga({
     super.key,
+    required this.id,
     required this.title,
     this.imageUrl,
     this.chapters,
@@ -72,16 +75,85 @@ class HomeManga extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 4.0),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFFFFFFFF),
-              fontFamily: GoogleFonts.montserrat().fontFamily,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFFFFFFF),
+                    fontFamily: GoogleFonts.montserrat().fontFamily,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              InkWell(
+                onTapDown: (TapDownDetails details) async {
+                  final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+                  await showMenu<String>(
+                    color: Color(0xFF181E2A),
+                    context: context,
+                    position: RelativeRect.fromRect(
+                      details.globalPosition & const Size(40, 40),
+                      Offset.zero & overlay.size,
+                    ),
+                    items: [
+                      PopupMenuItem(
+                        onTap: () {
+                          debugPrint('User adds manga $id to library');
+                        },
+                        child: Text(
+                          'Add to Library',
+                          style: TextStyle(
+                            color: Color(0xFFFFFFFF),
+                            fontFamily: GoogleFonts.montserrat().fontFamily,
+                          ),
+                        )
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          debugPrint('User adds manga $id to collection');
+                        },
+                        child: Text(
+                          'Add to Collection',
+                          style: TextStyle(
+                            color: Color(0xFFFFFFFF),
+                            fontFamily: GoogleFonts.montserrat().fontFamily,
+                          ),
+                        )
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          showAddReviewDialog(
+                            context,
+                            id: id,
+                            title: title,
+                            imageUrl: imageUrl!,
+                          );
+                        },
+                        child: Text(
+                          'Review',
+                          style: TextStyle(
+                            color: Color(0xFFFFFFFF),
+                            fontFamily: GoogleFonts.montserrat().fontFamily,
+                          ),
+                        )
+                      ),
+                    ],
+                  );
+                },
+                child: Icon(
+                  Icons.more_vert,
+                  size: 20,
+                  color: Color(0xFFB0B0B0), // Light gray color for arrow
+                ),
+              ),
+            ],
           ),
         ],
       ),
