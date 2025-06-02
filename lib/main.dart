@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/firebase_options.dart';
+import 'package:fp_ppb_manga_app/pages/login.dart';
+import 'package:fp_ppb_manga_app/pages/register.dart';
 import 'package:fp_ppb_manga_app/pages/root.dart';
 
 void main() async {
@@ -16,7 +18,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp(initialRoute: 'login', routes: {
+      'login': (context) => const LoginPage(),
+      'root': (context) => const RootPage(),
+      'register': (context) => const RegisterPage(),
+    },
       title: 'OtakuLib',
       // debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -32,7 +38,7 @@ class MainApp extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
         ),
       ),
-      home: RootPage(),
+      // home: LoginPage(),
     );
   }
 }
