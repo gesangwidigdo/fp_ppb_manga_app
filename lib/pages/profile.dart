@@ -14,17 +14,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Future<String?> _getUserName() async {
+  Future<Map<String, dynamic>?> _getUserData() async {
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return 'Guest User';
-    }
+    if (user == null) return null;
     final doc =
         await FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
             .get();
-    return doc.data()?['username'] ?? 'Unknown User';
+    return doc.data();
   }
 
   void _signOut() async {
@@ -52,20 +50,24 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                FutureBuilder<String?>(
-                  future: _getUserName(),
-                  initialData: 'Loading...',
+                FutureBuilder<Map<String, dynamic>?>(
+                  future: _getUserData(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator();
                     }
-                    final username = snapshot.data ?? 'Unknown User';
+                    final userData = snapshot.data;
+                    final username = userData?['username'] ?? 'Unknown User';
+                    final profilePictureUrl =
+                        userData!['profilePicture'].toString().trim().isNotEmpty
+                            ? userData['profilePicture']
+                            : 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg';
                     return Row(
                       children: [
                         CircleAvatar(
                           backgroundImage:
                               Image.network(
-                                'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg',
+                                profilePictureUrl,
                                 fit: BoxFit.cover,
                               ).image,
                           radius: 35,
