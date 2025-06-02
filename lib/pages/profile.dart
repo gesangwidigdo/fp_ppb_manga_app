@@ -3,6 +3,8 @@ import 'package:fp_ppb_manga_app/components/profile_menu.dart';
 import 'package:fp_ppb_manga_app/pages/collection.dart';
 import 'package:fp_ppb_manga_app/pages/library.dart';
 import 'package:fp_ppb_manga_app/pages/review.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,6 +14,32 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Future<String?> _getUserName() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return 'Guest User';
+    }
+    final doc =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+    return doc.data()?['username'] ?? 'Unknown User';
+  }
+
+  void _signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      if (!context.mounted) return;
+      Navigator.pushReplacementNamed(context, 'login');
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error signing out: $e')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,26 +52,36 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage:
-                          Image.network(
-                            'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg',
-                            fit: BoxFit.cover,
-                          ).image,
-                      radius: 35,
-                    ),
-                    const SizedBox(width: 16),
-                    Text(
-                      'John Doe',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                FutureBuilder<String?>(
+                  future: _getUserName(),
+                  initialData: 'Loading...',
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+                    final username = snapshot.data ?? 'Unknown User';
+                    return Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage:
+                              Image.network(
+                                'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg',
+                                fit: BoxFit.cover,
+                              ).image,
+                          radius: 35,
+                        ),
+                        const SizedBox(width: 16),
+                        Text(
+                          username,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -103,9 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: 'Log out',
                   description: 'Log out of your current profile',
                   icon: Icons.logout,
-                  onTap: () {
-                    debugPrint('Log out tapped');
-                  },
+                  onTap: _signOut,
                 ),
               ],
             ),
