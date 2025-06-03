@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/components/add_review.dart';
 import 'package:fp_ppb_manga_app/components/delete_confirmation.dart';
 import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +10,7 @@ class ReviewedManga extends StatelessWidget {
   final String imageUrl;
   final double rating;
   final String review;
-  final VoidCallback? onDeleted;
+  final VoidCallback? updateState;
 
   const ReviewedManga({
     super.key,
@@ -18,7 +19,7 @@ class ReviewedManga extends StatelessWidget {
     required this.imageUrl,
     required this.rating,
     required this.review,
-    this.onDeleted,
+    this.updateState,
   });
 
   @override
@@ -105,8 +106,17 @@ class ReviewedManga extends StatelessWidget {
                     ),
                     items: [
                       PopupMenuItem(
-                        onTap: () {
-                          debugPrint('Edit tapped for $title');
+                        onTap: () async {
+                          await showAddReviewDialog(
+                            context,
+                            id: id,
+                            title: title,
+                            imageUrl: imageUrl,
+                            isEdit: true,
+                            initialRating: rating.toInt(),
+                            initialReview: review,
+                          );
+                          updateState?.call();
                         },
                         child: Text(
                           'Edit',
@@ -126,7 +136,7 @@ class ReviewedManga extends StatelessWidget {
                           result.then((value) async {
                             if (value == true) {
                               await ReviewService().deleteReview(id);
-                              onDeleted?.call();
+                              updateState?.call();
                             }
                           });
                         },

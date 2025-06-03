@@ -7,9 +7,12 @@ Future<void> showAddReviewDialog(
   required int id,
   required String title,
   required String imageUrl,
+  bool isEdit = false,
+  int? initialRating,
+  String? initialReview,
 }) {
-  double rating = 0;
-  final TextEditingController reviewController = TextEditingController();
+  double rating = (isEdit && initialRating != null) ? initialRating.toDouble() : 0;
+  final TextEditingController reviewController = TextEditingController(text: (isEdit && initialReview != null) ? initialReview : '');
   final ReviewService reviewService = ReviewService();
 
   return showDialog(
@@ -24,7 +27,7 @@ Future<void> showAddReviewDialog(
             ),
             backgroundColor: Color(0xFF202939),
             title: Text(
-              'Rate & Review',
+              isEdit ? 'Edit Rate & Review' : 'Rate & Review',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,
@@ -149,7 +152,13 @@ Future<void> showAddReviewDialog(
                   backgroundColor: const Color(0xFF1D4ED7),
                 ),
                 onPressed: () async {
-                  reviewService.addReview(
+                  isEdit ? reviewService.updateReview(
+                    id: id,
+                    title: title,
+                    imageUrl: imageUrl,
+                    rating: rating.toInt(),
+                    review: reviewController.text.trim()
+                  ) : reviewService.addReview(
                     id: id,
                     title: title,
                     imageUrl: imageUrl,
@@ -159,7 +168,7 @@ Future<void> showAddReviewDialog(
                   Navigator.of(context).pop();
                 },
                 child: Text(
-                  'Submit',
+                  isEdit ? 'Update' : 'Submit',
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: GoogleFonts.montserrat().fontFamily,

@@ -42,4 +42,21 @@ class ReviewService {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     await _firestore.collection('users').doc(uid).collection('review').doc(id.toString()).delete();
   }
+
+  Future<void> updateReview({
+    required int id,
+    required String title,
+    required String imageUrl,
+    required int rating,
+    required String review,
+  }) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef = _firestore.collection('users').doc(uid).collection('review').doc(id.toString());
+    await docRef.update({
+      'title': title,
+      'imageUrl': imageUrl,
+      'rating': rating,
+      'review': review,
+    });
+  }
 }

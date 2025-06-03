@@ -59,7 +59,7 @@ class _ReviewPageState extends State<ReviewPage> {
           imageUrl: r.imageUrl ?? '',
           rating: r.rating.toDouble(),
           review: r.review,
-          onDeleted: _loadReviews,
+          updateState: _loadReviews,
         );
       },
       separatorBuilder: (context, index) => const Divider(
