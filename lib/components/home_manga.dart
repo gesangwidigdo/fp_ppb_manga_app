@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_review.dart';
+import 'package:fp_ppb_manga_app/pages/add_to_collection.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeManga extends StatelessWidget {
@@ -117,7 +118,13 @@ class HomeManga extends StatelessWidget {
                       ),
                       PopupMenuItem(
                         onTap: () {
-                          debugPrint('User adds manga $id to collection');
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => AddToCollection(
+                              mangaId: id,
+                              mangaTitle: title,
+                              mangaImageUrl: imageUrl,
+                            ),
+                          ));
                         },
                         child: Text(
                           'Add to Collection',
