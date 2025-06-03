@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/reviewed_manga.dart';
 import 'package:fp_ppb_manga_app/models/manga_model.dart';
-import 'package:fp_ppb_manga_app/services/manga_service.dart';
+import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReviewPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _ReviewPageState extends State<ReviewPage> {
   @override
   void initState() {
     super.initState();
-    _reviewedMangaFuture = MangaService().fetchReviewedManga();
+    _reviewedMangaFuture = ReviewService().fetchAllReviews();
   }
 
   Widget _buildReviewList(BuildContext context, AsyncSnapshot<List<ReviewedMangaModel>> snapshot) {

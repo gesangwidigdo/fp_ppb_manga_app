@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fp_ppb_manga_app/services/manga_service.dart';
 
 Future<void> showAddReviewDialog(
   BuildContext context, {
@@ -10,7 +10,7 @@ Future<void> showAddReviewDialog(
 }) {
   double rating = 0;
   final TextEditingController reviewController = TextEditingController();
-  final MangaService mangaService = MangaService();
+  final ReviewService reviewService = ReviewService();
 
   return showDialog(
     context: context,
@@ -149,8 +149,10 @@ Future<void> showAddReviewDialog(
                   backgroundColor: const Color(0xFF1D4ED7),
                 ),
                 onPressed: () async {
-                  mangaService.addReview(
+                  reviewService.addReview(
                     id: id,
+                    title: title,
+                    imageUrl: imageUrl,
                     rating: rating.toInt(),
                     review: reviewController.text.trim(),
                   );
