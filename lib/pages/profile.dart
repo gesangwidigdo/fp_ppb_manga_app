@@ -58,9 +58,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
                     final userData = snapshot.data;
                     final username = userData?['username'] ?? 'Unknown User';
+                    final profilePicture = userData?['profilePicture'];
                     final profilePictureUrl =
-                        userData!['profilePicture'].toString().trim().isNotEmpty
-                            ? userData['profilePicture']
+                        profilePicture != null && profilePicture.toString().trim().isNotEmpty
+                            ? profilePicture
                             : 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg';
                     return Row(
                       children: [
