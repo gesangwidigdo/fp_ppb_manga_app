@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/components/delete_confirmation.dart';
+import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReviewedManga extends StatelessWidget {
+  final int id;
   final String title;
   final String imageUrl;
   final double rating;
   final String review;
+  final VoidCallback? onDeleted;
 
   const ReviewedManga({
     super.key,
+    required this.id,
     required this.title,
     required this.imageUrl,
     required this.rating,
     required this.review,
+    this.onDeleted,
   });
 
   @override
@@ -84,6 +90,61 @@ class ReviewedManga extends StatelessWidget {
                   ),
                   maxLines: 6,
                   overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              InkWell(
+                onTapDown: (TapDownDetails details) async {
+                  final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+                  await showMenu<String>(
+                    color: Color(0xFF181E2A),
+                    context: context,
+                    position: RelativeRect.fromRect(
+                      details.globalPosition & const Size(40, 40),
+                      Offset.zero & overlay.size,
+                    ),
+                    items: [
+                      PopupMenuItem(
+                        onTap: () {
+                          debugPrint('Edit tapped for $title');
+                        },
+                        child: Text(
+                          'Edit',
+                          style: TextStyle(
+                            color: Color(0xFFFFFFFF),
+                            fontFamily: GoogleFonts.montserrat().fontFamily,
+                          ),
+                        )
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          final result = showDeleteDialog(
+                            context,
+                            upperText: 'Delete Review',
+                            bottomText: 'Are you sure you want to delete this review?',
+                          );
+                          result.then((value) async {
+                            if (value == true) {
+                              await ReviewService().deleteReview(id);
+                              onDeleted?.call();
+                            }
+                          });
+                        },
+                        child: Text(
+                          'Delete',
+                          style: TextStyle(
+                            color: Color(0xFFFFFFFF),
+                            fontFamily: GoogleFonts.montserrat().fontFamily,
+                          ),
+                        )
+                      ),
+                    ],
+                  );
+                },
+                child: Icon(
+                  Icons.more_vert,
+                  size: 20,
+                  color: Color(0xFFB0B0B0), // Light gray color for arrow
                 ),
               ),
             ],

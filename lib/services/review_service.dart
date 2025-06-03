@@ -37,4 +37,9 @@ class ReviewService {
       'review': review,
     });
   }
+
+  Future<void> deleteReview(int id) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await _firestore.collection('users').doc(uid).collection('review').doc(id.toString()).delete();
+  }
 }
