@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fp_ppb_manga_app/services/manga_service.dart';
 
 Future<void> showAddReviewDialog(
   BuildContext context, {
   required int id,
   required String title,
   required String imageUrl,
+  bool isEdit = false,
+  int? initialRating,
+  String? initialReview,
 }) {
-  double rating = 0;
-  final TextEditingController reviewController = TextEditingController();
-  final MangaService mangaService = MangaService();
+  double rating = (isEdit && initialRating != null) ? initialRating.toDouble() : 0;
+  final TextEditingController reviewController = TextEditingController(text: (isEdit && initialReview != null) ? initialReview : '');
+  final ReviewService reviewService = ReviewService();
 
   return showDialog(
     context: context,
@@ -24,7 +27,7 @@ Future<void> showAddReviewDialog(
             ),
             backgroundColor: Color(0xFF202939),
             title: Text(
-              'Rate & Review',
+              isEdit ? 'Edit Rate & Review' : 'Rate & Review',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,
@@ -149,15 +152,23 @@ Future<void> showAddReviewDialog(
                   backgroundColor: const Color(0xFF1D4ED7),
                 ),
                 onPressed: () async {
-                  mangaService.addReview(
+                  isEdit ? reviewService.updateReview(
                     id: id,
+                    title: title,
+                    imageUrl: imageUrl,
+                    rating: rating.toInt(),
+                    review: reviewController.text.trim()
+                  ) : reviewService.addReview(
+                    id: id,
+                    title: title,
+                    imageUrl: imageUrl,
                     rating: rating.toInt(),
                     review: reviewController.text.trim(),
                   );
                   Navigator.of(context).pop();
                 },
                 child: Text(
-                  'Submit',
+                  isEdit ? 'Update' : 'Submit',
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: GoogleFonts.montserrat().fontFamily,

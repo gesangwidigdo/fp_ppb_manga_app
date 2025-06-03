@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/reviewed_manga.dart';
 import 'package:fp_ppb_manga_app/models/manga_model.dart';
-import 'package:fp_ppb_manga_app/services/manga_service.dart';
+import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReviewPage extends StatefulWidget {
@@ -12,12 +12,18 @@ class ReviewPage extends StatefulWidget {
 }
 
 class _ReviewPageState extends State<ReviewPage> {
-  late Future<List<ReviewedMangaModel>> _reviewedMangaFuture;
+  late Future<List<ReviewedMangaModel>> _reviewFuture;
 
   @override
   void initState() {
     super.initState();
-    _reviewedMangaFuture = MangaService().fetchReviewedManga();
+    _loadReviews();
+  }
+
+  void _loadReviews() {
+    setState(() {
+      _reviewFuture = ReviewService().fetchAllReviews();
+    });
   }
 
   Widget _buildReviewList(BuildContext context, AsyncSnapshot<List<ReviewedMangaModel>> snapshot) {
@@ -48,10 +54,12 @@ class _ReviewPageState extends State<ReviewPage> {
       itemBuilder: (context, index) {
         final r = reviews[index];
         return ReviewedManga(
+          id: r.id,
           title: r.title,
           imageUrl: r.imageUrl ?? '',
           rating: r.rating.toDouble(),
           review: r.review,
+          updateState: _loadReviews,
         );
       },
       separatorBuilder: (context, index) => const Divider(
@@ -92,7 +100,7 @@ class _ReviewPageState extends State<ReviewPage> {
       ),
       backgroundColor: Color(0xFF202939),
       body: FutureBuilder<List<ReviewedMangaModel>>(
-        future: _reviewedMangaFuture,
+        future: _reviewFuture,
         builder: _buildReviewList,
       ),
     );
