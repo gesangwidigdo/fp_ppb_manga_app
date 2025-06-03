@@ -35,6 +35,18 @@ class MangaService {
     }
   }
 
+  Future<MangaModel> fetchMangaById(int mangaId) async {
+    final uri = Uri.parse('${baseUri}manga/$mangaId');
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return MangaModel.fromJson(data['data']);
+    } else {
+      throw Exception('Failed to load manga for id $mangaId');
+    }
+  }
+
   Future<List<Map<String, dynamic>>> fetchAllReviews() async {
     final snapshot = await _firestore.collection('review').get();
     return snapshot.docs.map((doc) {
