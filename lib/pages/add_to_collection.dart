@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/components/collection_list.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:fp_ppb_manga_app/components/add_collection.dart';
@@ -36,21 +37,19 @@ class _AddToCollectionState extends State<AddToCollection> {
     });
   }
 
-  // --- Ganti method _createNewCollectionAndAddManga dengan yang baru ---
   Future<void> _handleNewCollection() async {
     await showAddCollectionDialog(
       context,
       initialMangaId: widget.mangaId,
       mangaTitle: widget.mangaTitle,
-      onCollectionCreated: _fetchCollections, // Pass callback to refresh list
+      onCollectionCreated: _fetchCollections,
     );
-    // The dialog itself will handle popping the AddToCollectionPage if successful
   }
 
   Future<void> _addMangaToExistingCollection(String collectionId, String collectionName) async {
     try {
       await _collectionService.addMangaToCollection(collectionId, widget.mangaId);
-      Navigator.pop(context); // Close the Add to Collection page
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -104,7 +103,7 @@ class _AddToCollectionState extends State<AddToCollection> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: _handleNewCollection, // Call the new handler
+              onPressed: _handleNewCollection,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF1D4ED7),
                 shape: RoundedRectangleBorder(
@@ -151,15 +150,11 @@ class _AddToCollectionState extends State<AddToCollection> {
                   itemCount: collections.length,
                   itemBuilder: (context, index) {
                     final collection = collections[index];
-                    // Cek apakah manga sudah ada di koleksi ini
                     final bool mangaAlreadyInCollection = collection.mangaIds.contains(widget.mangaId);
 
                     return ListTile(
-                      leading: const Icon(
-                        Icons.folder,
-                        color: Colors.white54,
-                        size: 30,
-                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      leading: CollectionList(imageUrls: collection.coverImageUrls),
                       title: Text(
                         collection.name,
                         style: TextStyle(
@@ -176,7 +171,7 @@ class _AddToCollectionState extends State<AddToCollection> {
                         ),
                       ),
                       trailing: mangaAlreadyInCollection
-                          ? const Icon(Icons.check_circle, color: Colors.green) // Indikator sudah ada
+                          ? const Icon(Icons.check_circle, color: Colors.green)
                           : IconButton(
                               icon: const Icon(Icons.add, color: Colors.white),
                               onPressed: () => _addMangaToExistingCollection(collection.id, collection.name),

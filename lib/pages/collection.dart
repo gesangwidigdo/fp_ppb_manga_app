@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fp_ppb_manga_app/components/add_collection.dart'; // Import the dialog
+import 'package:fp_ppb_manga_app/components/add_collection.dart';
+import 'package:fp_ppb_manga_app/components/collection_list.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,7 +48,7 @@ class _CollectionPageState extends State<CollectionPage> {
           ),
         ),
         title: Text(
-          'My Collections', // Changed title for clarity
+          'My Collections',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -61,10 +62,9 @@ class _CollectionPageState extends State<CollectionPage> {
             child: IconButton(
               icon: const Icon(Icons.add, color: Colors.white, size: 28),
               onPressed: () {
-                // Call the reusable dialog to create an empty collection
                 showAddCollectionDialog(
                   context,
-                  onCollectionCreated: _fetchCollections, // Refresh list after creation
+                  onCollectionCreated: _fetchCollections,
                 );
               },
             ),
@@ -101,18 +101,26 @@ class _CollectionPageState extends State<CollectionPage> {
               ),
             );
           }
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+          return ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
             itemCount: collections.length,
+            separatorBuilder: (context, index) => const Divider(
+              color: Colors.white12,
+              height: 1,
+              indent: 16,
+              endIndent: 16,
+            ),
             itemBuilder: (context, index) {
               final collection = collections[index];
               return ListTile(
-                leading: const Icon(Icons.folder, color: Colors.white54, size: 36),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                leading: CollectionList(imageUrls: collection.coverImageUrls),
                 title: Text(
                   collection.name,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
+                    fontWeight: FontWeight.w500,
                     fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                 ),
@@ -126,7 +134,6 @@ class _CollectionPageState extends State<CollectionPage> {
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white54, size: 16),
                 onTap: () {
-                  // TODO: Navigate to collection detail page if needed
                   debugPrint('Tapped on collection: ${collection.name}');
                 },
               );
