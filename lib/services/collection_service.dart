@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import firebase_auth
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
+import 'package:fp_ppb_manga_app/services/manga_service.dart';
 
 class CollectionService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance; // Initialize FirebaseAuth
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final MangaService _mangaService = MangaService();
 
-  String? get currentUserId => _auth.currentUser?.uid; // Helper to get current user ID
+  String? get currentUserId => _auth.currentUser?.uid;
 
-  // Fetch all collections for the current user
   Future<List<CollectionModel>> fetchCollections() async {
     final userId = currentUserId;
     if (userId == null) {
@@ -18,18 +20,52 @@ class CollectionService {
     try {
       final snapshot = await _firestore
           .collection('collections')
-          .where('userId', isEqualTo: userId) // Filter by userId
+          .where('userId', isEqualTo: userId)
           .get();
-      return snapshot.docs
+
+      final List<CollectionModel> collections = snapshot.docs
           .map((doc) => CollectionModel.fromFirestore(doc.data(), doc.id))
           .toList();
+
+      const int batchSize = 4;
+      for (var collection in collections) {
+        if (collection.mangaIds.isNotEmpty) {
+          final List<String> imageUrls = [];
+          final List<Future<MangaModel>> fetchFutures = [];
+
+          final mangaIdsToFetch = collection.mangaIds.take(batchSize).cast<int>().toList();
+
+          for (var mangaId in mangaIdsToFetch) {
+            fetchFutures.add(_mangaService.fetchMangaById(mangaId));
+          }
+
+          final results = await Future.wait(fetchFutures.map((future) async {
+            try {
+              return await future;
+            } catch (e) {
+              print('Error fetching image for manga ID: $e');
+              return null;
+            }
+          }));
+
+          for (var manga in results) {
+            if (manga?.imageUrl != null) {
+              imageUrls.add(manga!.imageUrl!);
+            }
+          }
+          collection.coverImageUrls = imageUrls;
+
+          await Future.delayed(const Duration(milliseconds: 200));
+        }
+      }
+
+      return collections;
     } catch (e) {
       print('Error fetching collections for user $userId: $e');
       throw Exception('Failed to load collections');
     }
   }
 
-  // Create a new collection
   Future<CollectionModel> createCollection(String name, {int? initialMangaId}) async {
     final userId = currentUserId;
     if (userId == null) {
@@ -45,7 +81,7 @@ class CollectionService {
       final docRef = await _firestore.collection('collections').add({
         'name': name,
         'mangaIds': mangaIds,
-        'userId': userId, // Save userId with the collection
+        'userId': userId,
         'createdAt': FieldValue.serverTimestamp(),
       });
       return CollectionModel(id: docRef.id, name: name, mangaIds: mangaIds, userId: userId);
@@ -55,10 +91,7 @@ class CollectionService {
     }
   }
 
-  // Add a manga to an existing collection
   Future<void> addMangaToCollection(String collectionId, int mangaId) async {
-    // This method implicitly relies on the collection being user-specific
-    // because fetchCollections already filters by user.
     try {
       final collectionRef = _firestore.collection('collections').doc(collectionId);
       await collectionRef.update({
@@ -70,7 +103,6 @@ class CollectionService {
     }
   }
 
-  // Remove a manga from an existing collection (optional, but good to have)
   Future<void> removeMangaFromCollection(String collectionId, int mangaId) async {
     try {
       final collectionRef = _firestore.collection('collections').doc(collectionId);
