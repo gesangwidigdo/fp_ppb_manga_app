@@ -87,14 +87,13 @@ Future<void> showAddCollectionDialog(
               try {
                 await _collectionService.createCollection(
                   nameController.text.trim(),
-                  initialManga: initialManga, // Menggunakan parameter baru
+                  initialManga: initialManga,
                 );
 
                 if (onCollectionCreated != null) {
                   onCollectionCreated();
                 }
 
-                // Pop dua kali jika dipanggil dari AddToCollectionPage
                 if (initialManga != null) {
                     Navigator.pop(context);
                 }
