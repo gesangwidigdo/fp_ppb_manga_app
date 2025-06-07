@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future<void> showAddCollectionDialog(
   BuildContext context, {
-  int? initialMangaId, // Optional: Manga ID to add immediately
-  String? mangaTitle,   // Optional: Manga title for confirmation message
-  Function? onCollectionCreated, // Optional: Callback to refresh collections
+  MangaInCollectionModel? initialManga,
+  String? mangaTitle,
+  Function? onCollectionCreated,
 }) {
   TextEditingController nameController = TextEditingController();
   final CollectionService _collectionService = CollectionService();
@@ -59,7 +60,7 @@ Future<void> showAddCollectionDialog(
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context), // Just close the dialog
+            onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
               style: TextStyle(
@@ -80,26 +81,29 @@ Future<void> showAddCollectionDialog(
                     backgroundColor: Colors.red,
                   ),
                 );
-                return; // Prevent dismissal if empty
+                return;
               }
 
               try {
                 await _collectionService.createCollection(
                   nameController.text.trim(),
-                  initialMangaId: initialMangaId,
+                  initialManga: initialManga, // Menggunakan parameter baru
                 );
 
                 if (onCollectionCreated != null) {
-                  onCollectionCreated(); // Call the callback
+                  onCollectionCreated();
                 }
 
-                Navigator.pop(context); // Close the dialog
-                Navigator.pop(context); // Close the AddToCollectionPage if opened from there
+                // Pop dua kali jika dipanggil dari AddToCollectionPage
+                if (initialManga != null) {
+                    Navigator.pop(context);
+                }
+                Navigator.pop(context);
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      initialMangaId != null
+                      initialManga != null
                           ? 'Manga ${mangaTitle ?? 'selected'} added to new collection "${nameController.text.trim()}"!'
                           : 'Collection "${nameController.text.trim()}" created successfully!',
                       style: TextStyle(fontFamily: GoogleFonts.montserrat().fontFamily),

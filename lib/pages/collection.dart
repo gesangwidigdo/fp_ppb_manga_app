@@ -125,7 +125,7 @@ class _CollectionPageState extends State<CollectionPage> {
                   ),
                 ),
                 subtitle: Text(
-                  '${collection.mangaIds.length} manga',
+                  '${collection.mangas.length} manga',
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 14,
