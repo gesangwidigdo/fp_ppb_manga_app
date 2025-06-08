@@ -1,5 +1,3 @@
-import 'package:fp_ppb_manga_app/models/manga_model.dart';
-
 class CollectionModel {
   final String id;
   final String name;

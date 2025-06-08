@@ -45,7 +45,7 @@ class CollectionService {
 
       final docRef = await _firestore.collection('collections').add({
         'name': name,
-        'mangas': mangas, // Field 'mangas'
+        'mangas': mangas,
         'userId': userId,
         'createdAt': FieldValue.serverTimestamp(),
       });
@@ -84,6 +84,26 @@ class CollectionService {
     } catch (e) {
       print('Error removing manga from collection: $e');
       throw Exception('Failed to remove manga from collection');
+    }
+  }
+
+  Future<void> updateCollectionName(String collectionId, String newName) async {
+    try {
+      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      await collectionRef.update({'name': newName});
+    } catch (e) {
+      print('Error updating collection name: $e');
+      throw Exception('Failed to update collection name');
+    }
+  }
+
+  Future<void> deleteCollection(String collectionId) async {
+    try {
+      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      await collectionRef.delete();
+    } catch (e) {
+      print('Error deleting collection: $e');
+      throw Exception('Failed to delete collection');
     }
   }
 }

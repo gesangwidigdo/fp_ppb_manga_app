@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fp_ppb_manga_app/components/add_collection.dart';
+import 'package:fp_ppb_manga_app/components/add_or_edit_collection.dart';
 import 'package:fp_ppb_manga_app/components/collection_list.dart';
+import 'package:fp_ppb_manga_app/components/delete_confirmation.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
+import 'package:fp_ppb_manga_app/pages/collection_detail.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -62,9 +64,9 @@ class _CollectionPageState extends State<CollectionPage> {
             child: IconButton(
               icon: const Icon(Icons.add, color: Colors.white, size: 28),
               onPressed: () {
-                showAddCollectionDialog(
+                showAddOrEditCollectionDialog(
                   context,
-                  onCollectionCreated: _fetchCollections,
+                  onConfirm: _fetchCollections,
                 );
               },
             ),
@@ -132,9 +134,61 @@ class _CollectionPageState extends State<CollectionPage> {
                     fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                 ),
-                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white54, size: 16),
+                trailing: PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'edit') {
+                      showAddOrEditCollectionDialog(
+                        context,
+                        onConfirm: _fetchCollections,
+                        collectionId: collection.id,
+                        currentName: collection.name,
+                      );
+                    } else if (value == 'delete') {
+                      showDeleteDialog(
+                        context,
+                        upperText: 'Delete Collection',
+                        bottomText: 'Are you sure you want to delete "${collection.name}"?',
+                      ).then((confirmed) {
+                        if (confirmed == true) {
+                          _collectionService.deleteCollection(collection.id).then((_) {
+                            _fetchCollections();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Collection "${collection.name}" deleted.'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }).catchError((e) {
+                             ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Failed to delete collection: $e'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          });
+                        }
+                      });
+                    }
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: 'edit',
+                      child: Text('Edit Name'),
+                    ),
+                    const PopupMenuItem<String>(
+                      value: 'delete',
+                      child: Text('Delete Collection'),
+                    ),
+                  ],
+                  icon: const Icon(Icons.more_vert, color: Colors.white54),
+                ),
                 onTap: () {
-                  debugPrint('Tapped on collection: ${collection.name}');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CollectionDetailPage(collection: collection),
+                    ),
+                  );
                 },
               );
             },
