@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_review.dart';
+import 'package:fp_ppb_manga_app/models/library_model.dart';
 import 'package:fp_ppb_manga_app/pages/add_to_collection.dart';
+import 'package:fp_ppb_manga_app/services/library_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeManga extends StatelessWidget {
@@ -19,7 +22,6 @@ class HomeManga extends StatelessWidget {
     this.score,
   });
 
-
   @override
   Widget build(BuildContext context) {
     final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
@@ -36,7 +38,7 @@ class HomeManga extends StatelessWidget {
             child: Image.network(
               imageUrl!,
               width: itemWidth,
-              height: itemHeight, 
+              height: itemHeight,
               fit: BoxFit.cover,
             ),
           ),
@@ -95,7 +97,9 @@ class HomeManga extends StatelessWidget {
               ),
               InkWell(
                 onTapDown: (TapDownDetails details) async {
-                  final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+                  final overlay =
+                      Overlay.of(context).context.findRenderObject()
+                          as RenderBox;
                   await showMenu<String>(
                     color: Color(0xFF181E2A),
                     context: context,
@@ -105,8 +109,30 @@ class HomeManga extends StatelessWidget {
                     ),
                     items: [
                       PopupMenuItem(
-                        onTap: () {
-                          debugPrint('User adds manga $id to library');
+                        onTap: () async {
+                          final libraryService = LibraryService();
+                          final currentUserId = libraryService.currentUserId;
+
+                          if (currentUserId == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'You must be logged in to add to library.',
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            return;
+                          }
+
+                          final manga = MangaLibraryModel(
+                            mangaId: id,
+                            title: title,
+                            imageUrl: imageUrl,
+                            score: score,
+                          );
+
+                          await libraryService.addMangaToLibrary(manga: manga);
                         },
                         child: Text(
                           'Add to Library',
@@ -114,17 +140,21 @@ class HomeManga extends StatelessWidget {
                             color: Color(0xFFFFFFFF),
                             fontFamily: GoogleFonts.montserrat().fontFamily,
                           ),
-                        )
+                        ),
                       ),
                       PopupMenuItem(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => AddToCollection(
-                              mangaId: id,
-                              mangaTitle: title,
-                              mangaImageUrl: imageUrl,
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => AddToCollection(
+                                    mangaId: id,
+                                    mangaTitle: title,
+                                    mangaImageUrl: imageUrl,
+                                  ),
                             ),
-                          ));
+                          );
                         },
                         child: Text(
                           'Add to Collection',
@@ -132,7 +162,7 @@ class HomeManga extends StatelessWidget {
                             color: Color(0xFFFFFFFF),
                             fontFamily: GoogleFonts.montserrat().fontFamily,
                           ),
-                        )
+                        ),
                       ),
                       PopupMenuItem(
                         onTap: () {
@@ -149,7 +179,7 @@ class HomeManga extends StatelessWidget {
                             color: Color(0xFFFFFFFF),
                             fontFamily: GoogleFonts.montserrat().fontFamily,
                           ),
-                        )
+                        ),
                       ),
                     ],
                   );
