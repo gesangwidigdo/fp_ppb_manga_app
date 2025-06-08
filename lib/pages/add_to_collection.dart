@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/collection_list.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
-import 'package:fp_ppb_manga_app/components/add_collection.dart';
+import 'package:fp_ppb_manga_app/components/add_or_edit_collection.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddToCollection extends StatefulWidget {
@@ -38,14 +38,14 @@ class _AddToCollectionState extends State<AddToCollection> {
   }
 
   Future<void> _handleNewCollection() async {
-    await showAddCollectionDialog(
+    await showAddOrEditCollectionDialog(
       context,
       initialManga: MangaInCollectionModel(
           id: widget.mangaId,
           title: widget.mangaTitle,
           imageUrl: widget.mangaImageUrl),
       mangaTitle: widget.mangaTitle,
-      onCollectionCreated: _fetchCollections,
+      onConfirm: _fetchCollections,
     );
   }
 
