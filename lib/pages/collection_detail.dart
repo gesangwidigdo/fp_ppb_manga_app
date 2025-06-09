@@ -21,7 +21,6 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
   @override
   void initState() {
     super.initState();
-    // Salin daftar manga ke state lokal agar bisa dimodifikasi
     _mangaList = List.from(widget.collection.mangas);
   }
 
