@@ -182,13 +182,14 @@ class _CollectionPageState extends State<CollectionPage> {
                   ],
                   icon: const Icon(Icons.more_vert, color: Colors.white54),
                 ),
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CollectionDetailPage(collection: collection),
                     ),
                   );
+                  _fetchCollections();
                 },
               );
             },
