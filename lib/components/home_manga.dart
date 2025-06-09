@@ -12,6 +12,7 @@ class HomeManga extends StatelessWidget {
   final String? imageUrl;
   final int? chapters;
   final double? score;
+  final VoidCallback? onDelete;
 
   const HomeManga({
     super.key,
@@ -20,6 +21,7 @@ class HomeManga extends StatelessWidget {
     this.imageUrl,
     this.chapters,
     this.score,
+    this.onDelete,
   });
 
   @override
@@ -181,6 +183,19 @@ class HomeManga extends StatelessWidget {
                           ),
                         ),
                       ),
+                      if (onDelete != null)
+                        const PopupMenuDivider(),
+                      if (onDelete != null)
+                        PopupMenuItem(
+                          onTap: onDelete,
+                          child: Text(
+                            'Remove from Collection',
+                            style: TextStyle(
+                              color: Color(0xFFFFFFFF),
+                              fontFamily: GoogleFonts.montserrat().fontFamily,
+                            ),
+                          ),
+                        ),
                     ],
                   );
                 },
