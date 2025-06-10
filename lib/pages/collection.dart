@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_or_edit_collection.dart';
 import 'package:fp_ppb_manga_app/components/collection_list.dart';
-import 'package:fp_ppb_manga_app/components/delete_confirmation.dart';
+import 'package:fp_ppb_manga_app/components/confirmation.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/pages/collection_detail.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
@@ -144,10 +144,12 @@ class _CollectionPageState extends State<CollectionPage> {
                         currentName: collection.name,
                       );
                     } else if (value == 'delete') {
-                      showDeleteDialog(
+                      showConfirmationDialog(
                         context,
                         upperText: 'Delete Collection',
                         bottomText: 'Are you sure you want to delete "${collection.name}"?',
+                        isDelete: true,
+                        confirmText: 'Delete',
                       ).then((confirmed) {
                         if (confirmed == true) {
                           _collectionService.deleteCollection(collection.id).then((_) {

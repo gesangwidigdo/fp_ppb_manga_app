@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<bool?> showDeleteDialog(
+Future<bool?> showConfirmationDialog(
     BuildContext context, {
     required String upperText,
     required String bottomText,
+    String confirmText = 'Submit',
+    bool isDelete = false,
   }) {
   return showDialog<bool>(
     context: context,
@@ -34,6 +36,11 @@ Future<bool?> showDeleteDialog(
         ),
         actions: [
           TextButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
               'Cancel',
@@ -48,11 +55,11 @@ Future<bool?> showDeleteDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              backgroundColor: Colors.redAccent,
+              backgroundColor: isDelete ? Colors.redAccent : const Color(0xFF1D4ED7),
             ),
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(
-              'Delete',
+              confirmText,
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: GoogleFonts.montserrat().fontFamily,

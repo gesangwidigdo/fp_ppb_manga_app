@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_review.dart';
-import 'package:fp_ppb_manga_app/components/delete_confirmation.dart';
+import 'package:fp_ppb_manga_app/components/confirmation.dart';
 import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -128,10 +128,12 @@ class ReviewedManga extends StatelessWidget {
                       ),
                       PopupMenuItem(
                         onTap: () {
-                          final result = showDeleteDialog(
+                          final result = showConfirmationDialog(
                             context,
                             upperText: 'Delete Review',
                             bottomText: 'Are you sure you want to delete this review?',
+                            isDelete: true,
+                            confirmText: 'Delete',
                           );
                           result.then((value) async {
                             if (value == true) {

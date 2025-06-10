@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fp_ppb_manga_app/components/delete_confirmation.dart';
+import 'package:fp_ppb_manga_app/components/confirmation.dart';
 import 'package:fp_ppb_manga_app/components/home_manga.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
@@ -25,10 +25,12 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
   }
 
   void _removeMangaFromCollection(int mangaId) {
-    showDeleteDialog(
+    showConfirmationDialog(
       context,
       upperText: 'Remove Manga',
       bottomText: 'Are you sure you want to remove this manga from the collection?',
+      isDelete: true,
+      confirmText: 'Remove',
     ).then((confirmed) {
       if (confirmed == true) {
         _collectionService
