@@ -62,7 +62,7 @@ class _AddToCollectionState extends State<AddToCollection> {
         SnackBar(
           content: Text(
             'Manga added to collection "$collectionName"!',
-            style: TextStyle(fontFamily: GoogleFonts.montserrat().fontFamily),
+            style: GoogleFonts.montserrat(),
           ),
           backgroundColor: Colors.green,
         ),
@@ -72,7 +72,7 @@ class _AddToCollectionState extends State<AddToCollection> {
         SnackBar(
           content: Text(
             'Failed to add manga to collection: $e',
-            style: TextStyle(fontFamily: GoogleFonts.montserrat().fontFamily),
+            style: GoogleFonts.montserrat(),
           ),
           backgroundColor: Colors.red,
         ),
@@ -97,11 +97,10 @@ class _AddToCollectionState extends State<AddToCollection> {
         ),
         title: Text(
           'Add to collection',
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
         ),
         centerTitle: false,
@@ -122,11 +121,10 @@ class _AddToCollectionState extends State<AddToCollection> {
               ),
               child: Text(
                 'New collection',
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 ),
               ),
             ),
@@ -151,9 +149,9 @@ class _AddToCollectionState extends State<AddToCollection> {
                   return Center(
                     child: Text(
                       'No collections found. Create a new one!',
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                           color: Colors.white70,
-                          fontFamily: GoogleFonts.montserrat().fontFamily),
+                      )
                     ),
                   );
                 }
@@ -171,17 +169,15 @@ class _AddToCollectionState extends State<AddToCollection> {
                           CollectionList(imageUrls: collection.coverImageUrls),
                       title: Text(
                         collection.name,
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                           color: Colors.white,
-                          fontFamily: GoogleFonts.montserrat().fontFamily,
                         ),
                       ),
                       subtitle: Text(
                         '${collection.mangas.length} manga', // Updated
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                           color: Colors.white70,
                           fontSize: 12,
-                          fontFamily: GoogleFonts.montserrat().fontFamily,
                         ),
                       ),
                       trailing: mangaAlreadyInCollection
@@ -200,9 +196,7 @@ class _AddToCollectionState extends State<AddToCollection> {
                             SnackBar(
                               content: Text(
                                 'Manga already in collection "${collection.name}"!',
-                                style: TextStyle(
-                                    fontFamily:
-                                        GoogleFonts.montserrat().fontFamily),
+                                style: GoogleFonts.montserrat(),
                               ),
                               backgroundColor: Colors.orange,
                             ),

@@ -39,11 +39,10 @@ class ReviewedManga extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -58,10 +57,9 @@ class ReviewedManga extends StatelessWidget {
                   const SizedBox(width: 4.0),
                   Text(
                     '${rating.toInt().toString()} / 10',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontSize: 14,
                       color: Colors.white,
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                   ),
                 ]
@@ -84,10 +82,9 @@ class ReviewedManga extends StatelessWidget {
               Expanded(
                 child: Text(
                   review,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 14,
                     color: Color(0x7FFFFFFF),
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                   maxLines: 6,
                   overflow: TextOverflow.ellipsis,
@@ -120,9 +117,8 @@ class ReviewedManga extends StatelessWidget {
                         },
                         child: Text(
                           'Edit',
-                          style: TextStyle(
+                          style: GoogleFonts.montserrat(
                             color: Color(0xFFFFFFFF),
-                            fontFamily: GoogleFonts.montserrat().fontFamily,
                           ),
                         )
                       ),
@@ -144,9 +140,8 @@ class ReviewedManga extends StatelessWidget {
                         },
                         child: Text(
                           'Delete',
-                          style: TextStyle(
+                          style: GoogleFonts.montserrat(
                             color: Color(0xFFFFFFFF),
-                            fontFamily: GoogleFonts.montserrat().fontFamily,
                           ),
                         )
                       ),

@@ -76,9 +76,8 @@ class _RootPageState extends State<RootPage> {
                 color: Colors.white70,
               ),
               hintText: 'Search...',
-              hintStyle: TextStyle(
+              hintStyle: GoogleFonts.montserrat(
                 color: Colors.white70,
-                fontFamily: GoogleFonts.montserrat().fontFamily,
               ),
               filled: true,
               fillColor: const Color(0xFF2A2E3D),
@@ -98,11 +97,10 @@ class _RootPageState extends State<RootPage> {
           ),
         ) : Text(
           'OtakuLib',
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
         ),
         actions: _isSearching ? [
@@ -115,9 +113,8 @@ class _RootPageState extends State<RootPage> {
               }),
               child: Text(
                 'Cancel',
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 )
               ),
             ),

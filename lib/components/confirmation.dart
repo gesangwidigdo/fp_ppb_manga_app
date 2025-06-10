@@ -19,18 +19,16 @@ Future<bool?> showConfirmationDialog(
         ),
         title: Text(
           upperText,
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         content: Text(
           bottomText,
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             color: Colors.white70,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
             fontSize: 14,
           ),
         ),
@@ -44,9 +42,8 @@ Future<bool?> showConfirmationDialog(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
               'Cancel',
-              style: TextStyle(
+              style: GoogleFonts.montserrat(
                 color: Colors.white,
-                fontFamily: GoogleFonts.montserrat().fontFamily,
               ),
             ),
           ),
@@ -60,9 +57,8 @@ Future<bool?> showConfirmationDialog(
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(
               confirmText,
-              style: TextStyle(
+              style: GoogleFonts.montserrat(
                 color: Colors.white,
-                fontFamily: GoogleFonts.montserrat().fontFamily,
               ),
             ),
           ),

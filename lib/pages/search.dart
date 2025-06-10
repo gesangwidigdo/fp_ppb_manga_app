@@ -107,9 +107,8 @@ class _SearchPageState extends State<SearchPage> {
                   color: Colors.white70,
                 ),
                 hintText: 'Search...',
-                hintStyle: TextStyle(
+                hintStyle: GoogleFonts.montserrat(
                   color: Colors.white70,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 ),
                 filled: true,
                 fillColor: const Color(0xFF2A2E3D),
@@ -143,9 +142,8 @@ class _SearchPageState extends State<SearchPage> {
               },
               child: Text(
                 'Cancel',
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 )
               ),
             ),
@@ -163,9 +161,8 @@ class _SearchPageState extends State<SearchPage> {
         ) : (widget.currentIndex == 0 ? _buildSearchResults() : Center(
           child: Text(
             'Search results will appear here',
-            style: TextStyle(
+            style: GoogleFonts.montserrat(
               color: Colors.white70,
-              fontFamily: GoogleFonts.montserrat().fontFamily,
             ),
           ),
         ))

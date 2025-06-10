@@ -51,11 +51,10 @@ class _CollectionPageState extends State<CollectionPage> {
         ),
         title: Text(
           'My Collections',
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 24,
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
         ),
         actions: [
@@ -93,11 +92,10 @@ class _CollectionPageState extends State<CollectionPage> {
             return Center(
               child: Text(
                 'You have no collections yet. Create one!',
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.white70,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -119,19 +117,17 @@ class _CollectionPageState extends State<CollectionPage> {
                 leading: CollectionList(imageUrls: collection.coverImageUrls),
                 title: Text(
                   collection.name,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                 ),
                 subtitle: Text(
                   '${collection.mangas.length} manga',
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     color: Colors.white70,
                     fontSize: 14,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                 ),
                 trailing: PopupMenuButton<String>(

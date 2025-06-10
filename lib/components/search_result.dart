@@ -32,11 +32,10 @@ class SearchResult extends StatelessWidget {
         ),
         title: Text(
           name,
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 16,
             fontWeight: FontWeight.w400,
             color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
@@ -58,9 +57,8 @@ class SearchResult extends StatelessWidget {
                   },
                   child: Text(
                     'Add to Library',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Color(0xFFFFFFFF),
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                   )
                 ),
@@ -76,9 +74,8 @@ class SearchResult extends StatelessWidget {
                   },
                   child: Text(
                     'Add to Collection',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Color(0xFFFFFFFF),
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                   )
                 ),
@@ -93,9 +90,8 @@ class SearchResult extends StatelessWidget {
                   },
                   child: Text(
                     'Review',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Color(0xFFFFFFFF),
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                   )
                 ),

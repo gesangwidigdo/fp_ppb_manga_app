@@ -171,11 +171,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: Text(
                       'Sign Up',
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        fontFamily: GoogleFonts.montserrat().fontFamily,
                       ),
                     ),
                   ),
@@ -184,9 +183,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Text(
                     'Error: $_errorCode',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Colors.red,
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -197,9 +195,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Text(
                     'Already have an account?',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Colors.white70,
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                   ),
                   TextButton(
@@ -208,9 +205,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                     child: Text(
                       'Login here',
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: const Color(0xFF1D4ED7),
-                        fontFamily: GoogleFonts.montserrat().fontFamily,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

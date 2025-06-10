@@ -46,11 +46,10 @@ class _LibraryPageState extends State<LibraryPage> {
         ),
         title: Text(
           'Library',
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 24,
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
         ),
       ),
@@ -66,9 +65,8 @@ class _LibraryPageState extends State<LibraryPage> {
             return Center(
               child: Text(
                 'Error: ${snapshot.error}',
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   color: Colors.red,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 ),
               ),
             );
@@ -76,9 +74,8 @@ class _LibraryPageState extends State<LibraryPage> {
             return Center(
               child: Text(
                 'No manga in library',
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 ),
               ),
             );
@@ -105,11 +102,10 @@ class _LibraryPageState extends State<LibraryPage> {
                         children: [
                           Text(
                             mangas[index].title,
-                            style: TextStyle(
+                            style: GoogleFonts.montserrat(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
-                              fontFamily: GoogleFonts.montserrat().fontFamily,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -126,12 +122,10 @@ class _LibraryPageState extends State<LibraryPage> {
                               const SizedBox(width: 4),
                               Text(
                                 '${mangas[index].score ?? '-'}',
-                                style: TextStyle(
+                                style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
                                   color: Colors.white,
-                                  fontFamily:
-                                      GoogleFonts.montserrat().fontFamily,
                                 ),
                               ),
                             ],
@@ -167,11 +161,9 @@ class _LibraryPageState extends State<LibraryPage> {
                               value: status,
                               child: Text(
                                 status.toString().split('.').last,
-                                style: TextStyle(
+                                style: GoogleFonts.montserrat(
                                   fontSize: 14,
                                   color: Colors.white,
-                                  fontFamily:
-                                      GoogleFonts.montserrat().fontFamily,
                                 ),
                               ),
                             );

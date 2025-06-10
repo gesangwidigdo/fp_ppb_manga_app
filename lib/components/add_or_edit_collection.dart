@@ -27,20 +27,22 @@ Future<void> showAddOrEditCollectionDialog(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
         title: Text(
           isEditMode ? 'Edit Collection Name' : 'New Collection',
-          style: TextStyle(
-              color: Colors.white, fontFamily: GoogleFonts.montserrat().fontFamily),
+          style: GoogleFonts.montserrat(
+            color: Colors.white
+          ),
         ),
         content: Form(
           key: formKey,
           child: TextFormField(
             controller: nameController,
-            style: TextStyle(
-                color: Colors.white, fontFamily: GoogleFonts.montserrat().fontFamily),
+            style: GoogleFonts.montserrat(
+              color: Colors.white
+            ),
             decoration: InputDecoration(
               hintText: 'Collection name',
-              hintStyle: TextStyle(
-                  color: Colors.white70,
-                  fontFamily: GoogleFonts.montserrat().fontFamily),
+              hintStyle: GoogleFonts.montserrat(
+                color: Colors.white70
+              ),
               filled: true,
               fillColor: const Color(0xFF2A2E3D),
               border: OutlineInputBorder(
@@ -59,10 +61,12 @@ Future<void> showAddOrEditCollectionDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel',
-                style: TextStyle(
-                    color: Colors.white70,
-                    fontFamily: GoogleFonts.montserrat().fontFamily)),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.montserrat(
+                color: Colors.white70
+              )
+            ),
           ),
           ElevatedButton(
             style:
@@ -105,9 +109,10 @@ Future<void> showAddOrEditCollectionDialog(
               }
             },
             child: Text(isEditMode ? 'Save' : 'Create',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: GoogleFonts.montserrat().fontFamily)),
+            style: GoogleFonts.montserrat(
+                color: Colors.white,
+              )
+            ),
           ),
         ],
       );

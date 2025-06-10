@@ -90,11 +90,10 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
         title: Text(
           'Review',
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 24,
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
         ),
       ),

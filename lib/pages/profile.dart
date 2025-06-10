@@ -5,6 +5,7 @@ import 'package:fp_ppb_manga_app/pages/library.dart';
 import 'package:fp_ppb_manga_app/pages/review.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -79,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           const SizedBox(width: 16),
                           Text(
                             username,
-                            style: TextStyle(
+                            style: GoogleFonts.montserrat(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,

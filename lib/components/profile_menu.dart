@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfileMenu extends StatelessWidget {
   final String title;
@@ -39,19 +40,17 @@ class ProfileMenu extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontSize: 16,
-                    fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 Text(
                   description,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     color: Colors.white70,
                     fontSize: 12,
-                    fontFamily: 'Montserrat',
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,

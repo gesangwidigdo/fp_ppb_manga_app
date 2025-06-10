@@ -74,11 +74,10 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
         ),
         title: Text(
           widget.collection.name,
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 24,
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
         ),
       ),
@@ -94,10 +93,9 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
                     child: Text(
                       'This collection is empty.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         fontSize: 16,
                         color: Colors.white70,
-                        fontFamily: GoogleFonts.montserrat().fontFamily,
                       ),
                     ),
                   ),
