@@ -32,4 +32,16 @@ class MangaService {
       throw Exception('Failed to search manga');
     }
   }
+
+  Future<FullMangaModel> fetchFullManga(int id) async {
+    final uri = Uri.parse('${baseUri}manga/$id/full');
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return FullMangaModel.fromJson(data['data']);
+    } else {
+      throw Exception('Failed to load full manga');
+    }
+  }
 }

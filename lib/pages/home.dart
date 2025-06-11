@@ -44,11 +44,10 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
                   'Top Manga',
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                 ),
               ),
