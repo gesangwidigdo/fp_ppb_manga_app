@@ -264,7 +264,7 @@ class _MangaDetailState extends State<MangaDetail> {
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     CustomIconButton(
                                       itemWidth: itemWidth,
@@ -273,13 +273,15 @@ class _MangaDetailState extends State<MangaDetail> {
                                         debugPrint('Review button pressed for ${manga.title}');
                                       },
                                     ),
+                                    const SizedBox(width: 8.0),
                                     CustomIconButton(
                                       itemWidth: itemWidth,
                                       icon: Icons.local_library,
-                                      onPressed: () {
+                                      onPressed: () async {
                                         debugPrint('Library button pressed for ${manga.title}');
                                       },
                                     ),
+                                    const SizedBox(width: 8.0),
                                     CustomIconButton(
                                       itemWidth: itemWidth,
                                       icon: Icons.bookmark,
@@ -384,14 +386,15 @@ class CustomIconButton extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
       child: Card(
+        margin: EdgeInsets.zero,
         elevation: 4.0,
         color: Color(0xFF354157),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(icon, color: Color(0xFF181E2A), size: itemWidth * 0.135),
+          padding: const EdgeInsets.all(6.0),
+          child: Icon(icon, color: Color(0xFF181E2A), size: itemWidth * 0.135 + 4),
         ),
       ),
     );
