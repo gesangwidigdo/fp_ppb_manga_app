@@ -135,9 +135,9 @@ class _MangaDetailState extends State<MangaDetail> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Divider(
-                                      color: Colors.white.withValues(alpha: 0.5),
+                                      color: Color(0xFF354157),
                                       thickness: 1,
-                                      height: 29,
+                                      height: 28,
                                     ),
                                     RichText(
                                       text: TextSpan(
