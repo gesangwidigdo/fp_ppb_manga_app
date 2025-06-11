@@ -8,14 +8,18 @@ class SearchResult extends StatelessWidget {
   final int currentIndex;
   final int id;
   final String name;
-  final String? imageUrl;
+  final String imageUrl;
+  final int? chapter;
+  final double? score;
 
   const SearchResult({
+    super.key,
     required this.currentIndex,
     required this.id,
-    super.key,
     required this.name,
-    this.imageUrl,
+    required this.imageUrl,
+    this.chapter,
+    this.score,
   });
 
   @override
@@ -34,7 +38,7 @@ class SearchResult extends StatelessWidget {
         child: ListTile(
           leading: ClipRRect(
             child: Image.network(
-              imageUrl ?? 'https://placehold.co/48x48.png',
+              imageUrl,
               width: 48,
               height: 48,
               fit: BoxFit.cover,
@@ -76,9 +80,11 @@ class SearchResult extends StatelessWidget {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) => AddToCollection(
-                          mangaId: id!,
+                          mangaId: id,
                           mangaTitle: name,
                           mangaImageUrl: imageUrl,
+                          mangaChapters: chapter,
+                          mangaScore: score,
                         ),
                       ));
                     },
@@ -93,9 +99,9 @@ class SearchResult extends StatelessWidget {
                     onTap: () {
                       showAddReviewDialog(
                         context,
-                        id: id!,
+                        id: id,
                         title: name,
-                        imageUrl: imageUrl!,
+                        imageUrl: imageUrl,
                       );
                     },
                     child: Text(

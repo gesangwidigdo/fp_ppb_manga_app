@@ -56,7 +56,7 @@ class _ReviewPageState extends State<ReviewPage> {
         return ReviewedManga(
           id: r.id,
           title: r.title,
-          imageUrl: r.imageUrl ?? '',
+          imageUrl: r.imageUrl,
           rating: r.rating.toDouble(),
           review: r.review,
           updateState: _loadReviews,

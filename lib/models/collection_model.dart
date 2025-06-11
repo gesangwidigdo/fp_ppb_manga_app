@@ -2,11 +2,10 @@ class CollectionModel {
   final String id;
   final String name;
   final List<MangaInCollectionModel> mangas;
-  final String userId;
 
   List<String> get coverImageUrls {
     return mangas
-        .map((m) => m.imageUrl ?? '')
+        .map((m) => m.imageUrl)
         .where((url) => url.isNotEmpty)
         .take(4)
         .toList();
@@ -16,7 +15,6 @@ class CollectionModel {
     required this.id,
     required this.name,
     this.mangas = const [],
-    required this.userId,
   });
 
   factory CollectionModel.fromFirestore(Map<String, dynamic> data, String id) {
@@ -29,7 +27,6 @@ class CollectionModel {
       id: id,
       name: data['name'] as String,
       mangas: mangas,
-      userId: data['userId'] as String,
     );
   }
 }
@@ -37,19 +34,25 @@ class CollectionModel {
 class MangaInCollectionModel {
   final int id;
   final String title;
-  final String? imageUrl;
+  final String imageUrl;
+  final int? chapters;
+  final double? score;
 
   MangaInCollectionModel({
     required this.id,
     required this.title,
-    this.imageUrl,
+    required this.imageUrl,
+    this.chapters,
+    this.score,
   });
 
   factory MangaInCollectionModel.fromMap(Map<String, dynamic> map) {
     return MangaInCollectionModel(
       id: map['id'] as int,
       title: map['title'] as String,
-      imageUrl: map['imageUrl'] as String?,
+      imageUrl: map['imageUrl'] as String,
+      chapters: map['chapters'] as int?,
+      score: map['score'] != null ? (map['score'] as num).toDouble() : null,
     );
   }
 
@@ -58,6 +61,8 @@ class MangaInCollectionModel {
       'id': id,
       'title': title,
       'imageUrl': imageUrl,
+      'chapters': chapters,
+      'score': score,
     };
   }
 }

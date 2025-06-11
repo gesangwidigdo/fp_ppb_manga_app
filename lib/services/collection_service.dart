@@ -16,8 +16,10 @@ class CollectionService {
 
     try {
       final snapshot = await _firestore
-          .collection('collections')
-          .where('userId', isEqualTo: userId)
+          .collection('users')
+          .doc(userId)
+          .collection('collection')
+          .orderBy('createdAt', descending: true)
           .get();
 
       final List<CollectionModel> collections = snapshot.docs
@@ -43,17 +45,16 @@ class CollectionService {
         mangas.add(initialManga.toMap());
       }
 
-      final docRef = await _firestore.collection('collections').add({
+      final docRef = await _firestore.collection('users').doc(userId).collection('collection').add({
         'name': name,
         'mangas': mangas,
-        'userId': userId,
         'createdAt': FieldValue.serverTimestamp(),
       });
       return CollectionModel(
-          id: docRef.id,
-          name: name,
-          mangas: initialManga != null ? [initialManga] : [],
-          userId: userId);
+        id: docRef.id,
+        name: name,
+        mangas: initialManga != null ? [initialManga] : [],
+      );
     } catch (e) {
       print('Error creating collection: $e');
       throw Exception('Failed to create collection');
@@ -61,8 +62,9 @@ class CollectionService {
   }
 
   Future<void> addMangaToCollection(String collectionId, MangaInCollectionModel manga) async {
+    final userId = currentUserId;
     try {
-      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      final collectionRef = _firestore.collection('users').doc(userId).collection('collection').doc(collectionId);
       await collectionRef.update({
         'mangas': FieldValue.arrayUnion([manga.toMap()]),
       });
@@ -73,8 +75,9 @@ class CollectionService {
   }
 
   Future<void> removeMangaFromCollection(String collectionId, int mangaId) async {
+    final userId = currentUserId;
     try {
-      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      final collectionRef = _firestore.collection('users').doc(userId).collection('collection').doc(collectionId);
       final doc = await collectionRef.get();
       if (doc.exists) {
         final List<dynamic> mangas = doc.data()?['mangas'] ?? [];
@@ -88,8 +91,9 @@ class CollectionService {
   }
 
   Future<void> updateCollectionName(String collectionId, String newName) async {
+    final userId = currentUserId;
     try {
-      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      final collectionRef = _firestore.collection('users').doc(userId).collection('collection').doc(collectionId);
       await collectionRef.update({'name': newName});
     } catch (e) {
       print('Error updating collection name: $e');
@@ -98,8 +102,9 @@ class CollectionService {
   }
 
   Future<void> deleteCollection(String collectionId) async {
+    final userId = currentUserId;
     try {
-      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      final collectionRef = _firestore.collection('users').doc(userId).collection('collection').doc(collectionId);
       await collectionRef.delete();
     } catch (e) {
       print('Error deleting collection: $e');

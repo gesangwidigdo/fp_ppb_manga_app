@@ -94,8 +94,8 @@ class _MangaDetailState extends State<MangaDetail> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
-                          child: manga.imageUrl != null ? Image.network(
-                            manga.imageUrl!, // Use fetched image URL
+                          child: Image.network(
+                            manga.imageUrl, // Use fetched image URL
                             width: itemWidth,
                             height: itemHeight,
                             fit: BoxFit.cover,
@@ -105,11 +105,6 @@ class _MangaDetailState extends State<MangaDetail> {
                               color: Colors.grey[800],
                               child: Icon(Icons.broken_image, color: Colors.grey)
                             ),
-                          ) : Container(
-                            width: itemWidth,
-                            height: itemHeight,
-                            color: Colors.grey[800],
-                            child: Icon(Icons.image_not_supported, color: Colors.grey)
                           ),
                         ),
                         const SizedBox(width: 16.0),

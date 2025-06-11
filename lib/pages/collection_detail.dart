@@ -61,12 +61,14 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
   Widget build(BuildContext context) {
     final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
     final imageHeight = itemWidth * 1.42;
-    final totalItemHeight = imageHeight * 1.2;
+    final totalItemHeight = imageHeight * (MediaQuery.of(context).size.height / 690.9);
 
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
           onTap: () => Navigator.pop(context),
+          highlightColor: Colors.transparent,
+          splashFactory: NoSplash.splashFactory,
           child: Padding(
             padding: const EdgeInsets.only(left: 24),
             child: Image.asset('assets/icons/left_arrow.png', width: 36, height: 36),
@@ -81,23 +83,20 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
           ),
         ),
       ),
-      backgroundColor: const Color(0xFF202939),
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 24.0, 8.0, 32.0),
           child: _mangaList.isEmpty
               ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
-                    child: Text(
-                      'This collection is empty.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.montserrat(
-                        fontSize: 16,
-                        color: Colors.white70,
-                      ),
+                  child: Text(
+                    'This collection is empty.',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white70,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 )
               : GridView.builder(
@@ -116,8 +115,8 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
                       id: manga.id,
                       title: manga.title,
                       imageUrl: manga.imageUrl,
-                      chapters: null, 
-                      score: null,    
+                      chapters: manga.chapters, 
+                      score: manga.score,    
                       onDelete: () => _removeMangaFromCollection(manga.id),
                     );
                   },

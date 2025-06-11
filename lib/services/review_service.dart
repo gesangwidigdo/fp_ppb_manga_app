@@ -13,7 +13,7 @@ class ReviewService {
       return ReviewedMangaModel(
         id: data['id'] as int,
         title: data['title'] as String,
-        imageUrl: data['imageUrl'] as String?,
+        imageUrl: data['imageUrl'] as String,
         rating: data['rating'] as int,
         review: data['review'] as String,
       );

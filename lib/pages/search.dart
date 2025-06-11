@@ -19,7 +19,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   late FocusNode _searchFocusNode;
-  Future<List<MangaModel>>? _searchFuture;
+  Future<List<TopMangaModel>>? _searchFuture;
   final MangaService _mangaService = MangaService();
 
   @override
@@ -41,7 +41,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildSearchResults() {
-    return FutureBuilder<List<MangaModel>>(
+    return FutureBuilder<List<TopMangaModel>>(
       future: _searchFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

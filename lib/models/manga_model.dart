@@ -1,19 +1,19 @@
 class MangaModel {
   final int id;
   final String title;
-  final String? imageUrl;
+  final String imageUrl;
 
   MangaModel({
     required this.id,
     required this.title,
-    this.imageUrl,
+    required this.imageUrl,
   });
 
   factory MangaModel.fromJson(Map<String, dynamic> json) {
     return MangaModel(
       id: json['mal_id'] as int,
       title: (json['title_english'] as String?) ?? json['title'] as String,
-      imageUrl: json['images']['jpg']['image_url'] as String?,
+      imageUrl: json['images']['jpg']['image_url'] as String,
     );
   }
 }
@@ -25,7 +25,7 @@ class TopMangaModel extends MangaModel {
   TopMangaModel({
     required super.id,
     required super.title,
-    super.imageUrl,
+    required super.imageUrl,
     this.chapters,
     this.score,
   });
@@ -34,7 +34,7 @@ class TopMangaModel extends MangaModel {
     return TopMangaModel(
       id: json['mal_id'] as int,
       title: (json['title_english'] as String?) ?? json['title'] as String,
-      imageUrl: json['images']['jpg']['image_url'] as String?,
+      imageUrl: json['images']['jpg']['image_url'] as String,
       chapters: json['chapters'] as int?,
       score: (json['score'] as num?)?.toDouble(),
     );
@@ -48,7 +48,7 @@ class ReviewedMangaModel extends MangaModel {
   ReviewedMangaModel({
     required super.id,
     required super.title,
-    super.imageUrl,
+    required super.imageUrl,
     required this.rating,
     required this.review,
   });
@@ -57,7 +57,7 @@ class ReviewedMangaModel extends MangaModel {
     return ReviewedMangaModel(
       id: json['id'] as int,
       title: json['title'] as String,
-      imageUrl: json['imageUrl'] as String?,
+      imageUrl: json['imageUrl'] as String,
       rating: json['rating'] as int,
       review: json['review'] as String,
     );
@@ -80,7 +80,7 @@ class FullMangaModel extends MangaModel {
   FullMangaModel({
     required super.id,
     required super.title,
-    super.imageUrl,
+    required super.imageUrl,
     required this.titleJap,
     required this.type,
     required this.year,
@@ -110,7 +110,7 @@ class FullMangaModel extends MangaModel {
     return FullMangaModel(
       id: json['mal_id'] as int,
       title: (json['title_english'] as String?) ?? json['title'] as String,
-      imageUrl: json['images']['jpg']['image_url'] as String?,
+      imageUrl: json['images']['jpg']['image_url'] as String,
       titleJap: json['title_japanese'] as String,
       type: json['type'] as String,
       year: json['published']['prop']['from']['year'] as int,

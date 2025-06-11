@@ -19,7 +19,7 @@ class MangaService {
     }
   }
 
-  Future<List<MangaModel>> searchManga(String query) async {
+  Future<List<TopMangaModel>> searchManga(String query) async {
     final uri = Uri.parse('${baseUri}manga?q=$query&limit=20');
     final response = await http.get(uri);
 
@@ -27,7 +27,7 @@ class MangaService {
       final data = jsonDecode(response.body);
       final Map<String, dynamic> mangaList = data;
       final List<dynamic> mangaData = mangaList['data'];
-      return mangaData.map((manga) => MangaModel.fromJson(manga)).toList();
+      return mangaData.map((manga) => TopMangaModel.fromJson(manga)).toList();
     } else {
       throw Exception('Failed to search manga');
     }

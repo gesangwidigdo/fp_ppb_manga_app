@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 Future<void> showAddOrEditCollectionDialog(
   BuildContext context, {
-  required Function onConfirm,
   String? collectionId,
   String? currentName,
   MangaInCollectionModel? initialManga,
@@ -61,23 +60,33 @@ Future<void> showAddOrEditCollectionDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
             child: Text(
               'Cancel',
               style: GoogleFonts.montserrat(
-                color: Colors.white70
+                color: Colors.white
               )
             ),
           ),
           ElevatedButton(
             style:
-                ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1D4ED7)),
+                ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  backgroundColor: const Color(0xFF1D4ED7)
+                ),
             onPressed: () async {
               if (formKey.currentState!.validate()) {
                 final String newName = nameController.text.trim();
                 try {
                   if (isEditMode) {
                     await collectionService.updateCollectionName(
-                        collectionId!, newName);
+                        collectionId, newName);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text('Collection name updated!'),
@@ -98,7 +107,6 @@ Future<void> showAddOrEditCollectionDialog(
                     );
                   }
                   Navigator.pop(context);
-                  onConfirm();
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
