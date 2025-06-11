@@ -68,6 +68,7 @@ class ReviewedManga extends StatelessWidget {
           ),
           const SizedBox(height: 8.0),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
