@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:fp_ppb_manga_app/components/add_or_edit_collection.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,7 +44,7 @@ class _AddToCollectionState extends State<AddToCollection> {
   Future<void> _handleNewCollection() async {
     await showAddOrEditCollectionDialog(
       context,
-      initialManga: MangaInCollectionModel(
+      initialManga: FullMangaModel(
           id: widget.mangaId,
           title: widget.mangaTitle,
           imageUrl: widget.mangaImageUrl
@@ -56,7 +57,7 @@ class _AddToCollectionState extends State<AddToCollection> {
   Future<void> _addMangaToExistingCollection(
       String collectionId, String collectionName) async {
     try {
-      final mangaToAdd = MangaInCollectionModel(
+      final mangaToAdd = FullMangaModel(
           id: widget.mangaId,
           title: widget.mangaTitle,
           imageUrl: widget.mangaImageUrl,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
 
 class CollectionService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -33,7 +34,7 @@ class CollectionService {
     }
   }
 
-  Future<CollectionModel> createCollection(String name, {MangaInCollectionModel? initialManga}) async {
+  Future<CollectionModel> createCollection(String name, {FullMangaModel? initialManga}) async {
     final userId = currentUserId;
     if (userId == null) {
       throw Exception('User not logged in.');
@@ -42,7 +43,7 @@ class CollectionService {
     try {
       List<Map<String, dynamic>> mangas = [];
       if (initialManga != null) {
-        mangas.add(initialManga.toMap());
+        mangas.add(initialManga.toMapCollection());
       }
 
       final docRef = await _firestore.collection('users').doc(userId).collection('collection').add({
@@ -61,12 +62,12 @@ class CollectionService {
     }
   }
 
-  Future<void> addMangaToCollection(String collectionId, MangaInCollectionModel manga) async {
+  Future<void> addMangaToCollection(String collectionId, FullMangaModel manga) async {
     final userId = currentUserId;
     try {
       final collectionRef = _firestore.collection('users').doc(userId).collection('collection').doc(collectionId);
       await collectionRef.update({
-        'mangas': FieldValue.arrayUnion([manga.toMap()]),
+        'mangas': FieldValue.arrayUnion([manga.toMapCollection()]),
       });
     } catch (e) {
       print('Error adding manga to collection: $e');

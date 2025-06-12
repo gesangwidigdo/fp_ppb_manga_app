@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_or_edit_collection.dart';
 import 'package:fp_ppb_manga_app/components/confirmation.dart';
+import 'package:fp_ppb_manga_app/components/show_more.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/pages/collection_detail.dart';
 import 'package:fp_ppb_manga_app/pages/manga_detail.dart';
@@ -201,80 +202,64 @@ class CollectionList extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              InkWell(
-                onTapDown: (TapDownDetails details) async {
-                  final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-                  await showMenu<String>(
-                    color: Color(0xFF181E2A),
-                    context: context,
-                    position: RelativeRect.fromRect(
-                      details.globalPosition & const Size(40, 40),
-                      Offset.zero & overlay.size,
-                    ),
-                    items: [
-                      PopupMenuItem(
-                        onTap: () async {
-                          await Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => CollectionDetailPage(
-                              collection: collection,
-                            ),
-                          ));
+              ShowMore(
+                menuItems: [
+                  PopupMenuItem(
+                    onTap: () async {
+                      await Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => CollectionDetailPage(
+                          collection: collection,
+                        ),
+                      ));
+                      updateState?.call();
+                    },
+                    child: Text(
+                      'Show Details',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    )
+                  ),
+                  PopupMenuItem(
+                    onTap: () async {
+                      await showAddOrEditCollectionDialog(
+                        context,
+                        collectionId: collection.id,
+                        currentName: collection.name,
+                      );
+                      updateState?.call();
+                    },
+                    child: Text(
+                      'Edit',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    )
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      final result = showConfirmationDialog(
+                        context,
+                        upperText: 'Delete Collection',
+                        bottomText: 'Are you sure you want to delete "${collection.name}"?',
+                        isDelete: true,
+                        confirmText: 'Delete',
+                      );
+                      result.then((value) async {
+                        if (value == true) {
+                          await CollectionService().deleteCollection(collection.id);
                           updateState?.call();
-                        },
-                        child: Text(
-                          'Show Details',
-                          style: GoogleFonts.montserrat(
-                            color: Color(0xFFFFFFFF),
-                          ),
-                        )
+                        }
+                      });
+                    },
+                    child: Text(
+                      'Delete',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFFFFFFF),
                       ),
-                      PopupMenuItem(
-                        onTap: () async {
-                          await showAddOrEditCollectionDialog(
-                            context,
-                            collectionId: collection.id,
-                            currentName: collection.name,
-                          );
-                          updateState?.call();
-                        },
-                        child: Text(
-                          'Edit',
-                          style: GoogleFonts.montserrat(
-                            color: Color(0xFFFFFFFF),
-                          ),
-                        )
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
-                          final result = showConfirmationDialog(
-                            context,
-                            upperText: 'Delete Collection',
-                            bottomText: 'Are you sure you want to delete "${collection.name}"?',
-                            isDelete: true,
-                            confirmText: 'Delete',
-                          );
-                          result.then((value) async {
-                            if (value == true) {
-                              await CollectionService().deleteCollection(collection.id);
-                              updateState?.call();
-                            }
-                          });
-                        },
-                        child: Text(
-                          'Delete',
-                          style: GoogleFonts.montserrat(
-                            color: Color(0xFFFFFFFF),
-                          ),
-                        )
-                      ),
-                    ],
-                  );
-                },
-                child: Icon(
-                  Icons.more_vert,
-                  size: 20,
-                  color: Color(0xFFD9D9D9),
-                ),
+                    )
+                  ),
+                ],
               ),
             ]
           ),

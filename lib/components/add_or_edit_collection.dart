@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fp_ppb_manga_app/models/collection_model.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -7,7 +7,7 @@ Future<void> showAddOrEditCollectionDialog(
   BuildContext context, {
   String? collectionId,
   String? currentName,
-  MangaInCollectionModel? initialManga,
+  FullMangaModel? initialManga,
   String? mangaTitle,
 }) {
   final bool isEditMode = collectionId != null;

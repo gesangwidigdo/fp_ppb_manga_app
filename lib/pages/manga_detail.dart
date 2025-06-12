@@ -16,7 +16,7 @@ class MangaDetail extends StatefulWidget {
 }
 
 class _MangaDetailState extends State<MangaDetail> {
-  late Future<FullMangaModel> _mangaDetailFuture;
+  late Future<MangaDetailModel> _mangaDetailFuture;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _MangaDetailState extends State<MangaDetail> {
         ),
       ),
       backgroundColor: Color(0xFF202939),
-      body: FutureBuilder<FullMangaModel>(
+      body: FutureBuilder<MangaDetailModel>(
         future: _mangaDetailFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

@@ -1,126 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:fp_ppb_manga_app/components/add_review.dart';
-import 'package:fp_ppb_manga_app/pages/add_to_collection.dart';
+import 'package:fp_ppb_manga_app/components/show_more.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/pages/manga_detail.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchResult extends StatelessWidget {
   final int currentIndex;
-  final int id;
-  final String name;
-  final String imageUrl;
-  final int? chapter;
-  final double? score;
+  final FullMangaModel manga;
 
   const SearchResult({
     super.key,
     required this.currentIndex,
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    this.chapter,
-    this.score,
+    required this.manga,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        debugPrint('User taps on manga $id');
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => MangaDetail(
-            id: id
-          ),
-        ));
-      },
-      child: SizedBox(
-        height: 56,
-        child: ListTile(
-          leading: ClipRRect(
-            child: Image.network(
-              imageUrl,
-              width: 48,
-              height: 48,
-              fit: BoxFit.cover,
-            ),
-          ),
-          title: Text(
-            name,
-            style: GoogleFonts.montserrat(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Colors.white,
-            ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-          ),
-          trailing: InkWell(
-            onTapDown: (TapDownDetails details) async {
-              final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-              await showMenu<String>(
-                color: Color(0xFF181E2A),
-                context: context,
-                position: RelativeRect.fromRect(
-                  details.globalPosition & const Size(40, 40),
-                  Offset.zero & overlay.size,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => MangaDetail(
+                  id: manga.id
                 ),
-                items: currentIndex == 0 ? [
-                  PopupMenuItem(
-                    onTap: () {
-                      debugPrint('User adds manga $name to library');
-                    },
-                    child: Text(
-                      'Add to Library',
-                      style: GoogleFonts.montserrat(
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    )
-                  ),
-                  PopupMenuItem(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => AddToCollection(
-                          mangaId: id,
-                          mangaTitle: name,
-                          mangaImageUrl: imageUrl,
-                          mangaChapters: chapter,
-                          mangaScore: score,
-                        ),
-                      ));
-                    },
-                    child: Text(
-                      'Add to Collection',
-                      style: GoogleFonts.montserrat(
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    )
-                  ),
-                  PopupMenuItem(
-                    onTap: () {
-                      showAddReviewDialog(
-                        context,
-                        id: id,
-                        title: name,
-                        imageUrl: imageUrl,
-                      );
-                    },
-                    child: Text(
-                      'Review',
-                      style: GoogleFonts.montserrat(
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    )
-                  ),
-                ] : [],
-              );
+              ));
             },
-            child: Icon(
-              Icons.more_vert,
-              size: 24,
-              color: Colors.white, // Light gray color for arrow
-            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  child: Image.network(
+                    manga.imageUrl,
+                    width: 48,
+                    height: 48,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(width: 16.0),
+                Expanded(
+                  child: Text(
+                    manga.title,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ),
+              ],
+            )
           ),
         ),
+        ShowMore(
+          manga: manga,
+        )
+      ]
       ),
     );
   }

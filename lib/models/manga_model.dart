@@ -18,11 +18,11 @@ class MangaModel {
   }
 }
 
-class TopMangaModel extends MangaModel {
+class FullMangaModel extends MangaModel {
   final int? chapters;
   final double? score;
 
-  TopMangaModel({
+  FullMangaModel({
     required super.id,
     required super.title,
     required super.imageUrl,
@@ -30,14 +30,34 @@ class TopMangaModel extends MangaModel {
     this.score,
   });
 
-  factory TopMangaModel.fromJson(Map<String, dynamic> json) {
-    return TopMangaModel(
+  factory FullMangaModel.fromJsonAPI(Map<String, dynamic> json) {
+    return FullMangaModel(
       id: json['mal_id'] as int,
       title: (json['title_english'] as String?) ?? json['title'] as String,
       imageUrl: json['images']['jpg']['image_url'] as String,
       chapters: json['chapters'] as int?,
       score: (json['score'] as num?)?.toDouble(),
     );
+  }
+
+  factory FullMangaModel.fromMapCollection(Map<String, dynamic> map) {
+    return FullMangaModel(
+      id: map['id'] as int,
+      title: map['title'] as String,
+      imageUrl: map['imageUrl'] as String,
+      chapters: map['chapters'] as int?,
+      score: map['score'] != null ? (map['score'] as num).toDouble() : null,
+    );
+  }
+
+  Map<String, dynamic> toMapCollection() {
+    return {
+      'id': id,
+      'title': title,
+      'imageUrl': imageUrl,
+      'chapters': chapters,
+      'score': score,
+    };
   }
 }
 
@@ -64,7 +84,7 @@ class ReviewedMangaModel extends MangaModel {
   }
 }
 
-class FullMangaModel extends MangaModel {
+class MangaDetailModel extends MangaModel {
   final String titleJap;
   final String type;
   final int year;
@@ -77,7 +97,7 @@ class FullMangaModel extends MangaModel {
   final String themes;
   final String demographics;
 
-  FullMangaModel({
+  MangaDetailModel({
     required super.id,
     required super.title,
     required super.imageUrl,
@@ -94,7 +114,7 @@ class FullMangaModel extends MangaModel {
     required this.demographics,
   });
 
-  factory FullMangaModel.fromJson(Map<String, dynamic> json) {
+  factory MangaDetailModel.fromJson(Map<String, dynamic> json) {
     List<String> getNames(List<dynamic>? list) {
       if (list == null || list.isEmpty) {
         return [];
@@ -107,7 +127,7 @@ class FullMangaModel extends MangaModel {
     List<String> themeNames = getNames(json['themes'] as List<dynamic>?);
     List<String> demographicNames = getNames(json['demographics'] as List<dynamic>?);
 
-    return FullMangaModel(
+    return MangaDetailModel(
       id: json['mal_id'] as int,
       title: (json['title_english'] as String?) ?? json['title'] as String,
       imageUrl: json['images']['jpg']['image_url'] as String,

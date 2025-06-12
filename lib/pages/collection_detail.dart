@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/confirmation.dart';
-import 'package:fp_ppb_manga_app/components/home_manga.dart';
+import 'package:fp_ppb_manga_app/components/full_manga.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,7 +17,7 @@ class CollectionDetailPage extends StatefulWidget {
 
 class _CollectionDetailPageState extends State<CollectionDetailPage> {
   final CollectionService _collectionService = CollectionService();
-  late List<MangaInCollectionModel> _mangaList;
+  late List<FullMangaModel> _mangaList;
 
   @override
   void initState() {
@@ -111,12 +112,8 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
                   ),
                   itemBuilder: (context, index) {
                     final manga = _mangaList[index];
-                    return HomeManga(
-                      id: manga.id,
-                      title: manga.title,
-                      imageUrl: manga.imageUrl,
-                      chapters: manga.chapters, 
-                      score: manga.score,    
+                    return FullManga(
+                      manga: manga,   
                       onDelete: () => _removeMangaFromCollection(manga.id),
                     );
                   },

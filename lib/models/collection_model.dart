@@ -1,7 +1,9 @@
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
+
 class CollectionModel {
   final String id;
   final String name;
-  final List<MangaInCollectionModel> mangas;
+  final List<FullMangaModel> mangas;
 
   List<String> get coverImageUrls {
     return mangas
@@ -20,7 +22,7 @@ class CollectionModel {
   factory CollectionModel.fromFirestore(Map<String, dynamic> data, String id) {
     final mangasData = data['mangas'] as List<dynamic>? ?? [];
     final mangas = mangasData
-        .map((mangaData) => MangaInCollectionModel.fromMap(mangaData as Map<String, dynamic>))
+        .map((mangaData) => FullMangaModel.fromMapCollection(mangaData as Map<String, dynamic>))
         .toList();
 
     return CollectionModel(
@@ -28,41 +30,5 @@ class CollectionModel {
       name: data['name'] as String,
       mangas: mangas,
     );
-  }
-}
-
-class MangaInCollectionModel {
-  final int id;
-  final String title;
-  final String imageUrl;
-  final int? chapters;
-  final double? score;
-
-  MangaInCollectionModel({
-    required this.id,
-    required this.title,
-    required this.imageUrl,
-    this.chapters,
-    this.score,
-  });
-
-  factory MangaInCollectionModel.fromMap(Map<String, dynamic> map) {
-    return MangaInCollectionModel(
-      id: map['id'] as int,
-      title: map['title'] as String,
-      imageUrl: map['imageUrl'] as String,
-      chapters: map['chapters'] as int?,
-      score: map['score'] != null ? (map['score'] as num).toDouble() : null,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'imageUrl': imageUrl,
-      'chapters': chapters,
-      'score': score,
-    };
   }
 }

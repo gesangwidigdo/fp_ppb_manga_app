@@ -19,7 +19,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   late FocusNode _searchFocusNode;
-  Future<List<TopMangaModel>>? _searchFuture;
+  Future<List<FullMangaModel>>? _searchFuture;
   final MangaService _mangaService = MangaService();
 
   @override
@@ -41,7 +41,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildSearchResults() {
-    return FutureBuilder<List<TopMangaModel>>(
+    return FutureBuilder<List<FullMangaModel>>(
       future: _searchFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -73,9 +73,7 @@ class _SearchPageState extends State<SearchPage> {
             final res = results[i];
             return widget.currentIndex == 0 ? SearchResult(
               currentIndex: widget.currentIndex,
-              id: res.id,
-              name: res.title,
-              imageUrl: res.imageUrl,
+              manga: res,
             ) : null ;
           },
         );

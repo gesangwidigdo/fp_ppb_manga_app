@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_review.dart';
 import 'package:fp_ppb_manga_app/components/confirmation.dart';
+import 'package:fp_ppb_manga_app/components/show_more.dart';
 import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -92,69 +93,53 @@ class ReviewedManga extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8.0),
-              InkWell(
-                onTapDown: (TapDownDetails details) async {
-                  final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-                  await showMenu<String>(
-                    color: Color(0xFF181E2A),
-                    context: context,
-                    position: RelativeRect.fromRect(
-                      details.globalPosition & const Size(40, 40),
-                      Offset.zero & overlay.size,
-                    ),
-                    items: [
-                      PopupMenuItem(
-                        onTap: () async {
-                          await showAddReviewDialog(
-                            context,
-                            id: id,
-                            title: title,
-                            imageUrl: imageUrl,
-                            isEdit: true,
-                            initialRating: rating.toInt(),
-                            initialReview: review,
-                          );
+              ShowMore(
+                menuItems: [
+                  PopupMenuItem(
+                    onTap: () async {
+                      await showAddReviewDialog(
+                        context,
+                        id: id,
+                        title: title,
+                        imageUrl: imageUrl,
+                        isEdit: true,
+                        initialRating: rating.toInt(),
+                        initialReview: review,
+                      );
+                      updateState?.call();
+                    },
+                    child: Text(
+                      'Edit',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    )
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      final result = showConfirmationDialog(
+                        context,
+                        upperText: 'Delete Review',
+                        bottomText: 'Are you sure you want to delete this review?',
+                        isDelete: true,
+                        confirmText: 'Delete',
+                      );
+                      result.then((value) async {
+                        if (value == true) {
+                          await ReviewService().deleteReview(id);
                           updateState?.call();
-                        },
-                        child: Text(
-                          'Edit',
-                          style: GoogleFonts.montserrat(
-                            color: Color(0xFFFFFFFF),
-                          ),
-                        )
+                        }
+                      });
+                    },
+                    child: Text(
+                      'Delete',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFFFFFFF),
                       ),
-                      PopupMenuItem(
-                        onTap: () {
-                          final result = showConfirmationDialog(
-                            context,
-                            upperText: 'Delete Review',
-                            bottomText: 'Are you sure you want to delete this review?',
-                            isDelete: true,
-                            confirmText: 'Delete',
-                          );
-                          result.then((value) async {
-                            if (value == true) {
-                              await ReviewService().deleteReview(id);
-                              updateState?.call();
-                            }
-                          });
-                        },
-                        child: Text(
-                          'Delete',
-                          style: GoogleFonts.montserrat(
-                            color: Color(0xFFFFFFFF),
-                          ),
-                        )
-                      ),
-                    ],
-                  );
-                },
-                child: Icon(
-                  Icons.more_vert,
-                  size: 20,
-                  color: Color(0xFFB0B0B0), // Light gray color for arrow
-                ),
-              ),
+                    )
+                  ),
+                ],
+              )
             ],
           ),
         ]
