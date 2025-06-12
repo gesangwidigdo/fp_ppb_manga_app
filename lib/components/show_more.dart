@@ -69,7 +69,7 @@ class ShowMore extends StatelessWidget {
                     }
                     
                     final mangaLib = MangaLibraryModel(
-                      mangaId: manga!.id,
+                      id: manga!.id,
                       title: manga!.title,
                       imageUrl: manga!.imageUrl,
                       score: manga!.score,

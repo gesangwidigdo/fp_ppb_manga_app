@@ -1,25 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
+
 enum ReadingStatus { unread, ongoing, completed }
 
-class MangaLibraryModel {
-  final int mangaId;
-  final String title;
-  final String? imageUrl;
+class MangaLibraryModel extends MangaModel{
   final double? score;
   final ReadingStatus status;
 
   MangaLibraryModel({
-    required this.mangaId,
-    required this.title,
+    required super.id,
+    required super.title,
+    required super.imageUrl,
     this.score,
-    this.imageUrl,
     this.status = ReadingStatus.unread,
   });
 
   factory MangaLibraryModel.fromMap(Map<String, dynamic> maps) {
     return MangaLibraryModel(
-      mangaId: maps['mangaId'] as int,
+      id: maps['mangaId'] as int,
       title: maps['title'] as String,
-      imageUrl: maps['imageUrl'] as String?,
+      imageUrl: maps['imageUrl'] as String,
       score: maps['score'] != null ? (maps['score'] as num).toDouble() : null,
       status: ReadingStatus.values.firstWhere(
         (e) => e.toString() == 'ReadingStatus.${maps['status']}',
@@ -30,11 +30,12 @@ class MangaLibraryModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'mangaId': mangaId,
+      'mangaId': id,
       'title': title,
       'imageUrl': imageUrl,
       'score': score,
       'status': status.toString().split('.').last,
+      'createdAt': FieldValue.serverTimestamp(),
     };
   }
 
@@ -46,7 +47,7 @@ class MangaLibraryModel {
     ReadingStatus? status,
   }) {
     return MangaLibraryModel(
-      mangaId: mangaId ?? this.mangaId,
+      id: mangaId ?? id,
       title: title ?? this.title,
       imageUrl: imageUrl ?? this.imageUrl,
       score: score ?? this.score,

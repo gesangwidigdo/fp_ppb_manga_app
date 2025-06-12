@@ -14,12 +14,15 @@ class LibraryService {
         throw Exception('User not logged in.');
       }
       final docRef = _firestore
-          .collection('library')
+          .collection('users')
           .doc(userId)
-          .collection('mangas')
-          .doc(manga.mangaId.toString());
+          .collection('library')
+          .doc(manga.id.toString());
 
-      await docRef.set(manga.toMap());
+      await docRef.set(
+        manga.toMap(),
+      );
+      
     } catch (e) {
       print('Error adding manga to library: $e');
     }
@@ -28,9 +31,10 @@ class LibraryService {
   Future<List<MangaLibraryModel>> fetchLibrary(String userId) async {
     final snapshot =
         await _firestore
-            .collection('library')
+            .collection('users')
             .doc(userId)
-            .collection('mangas')
+            .collection('library')
+            .orderBy('createdAt', descending: true)
             .get();
 
     return snapshot.docs
@@ -48,9 +52,9 @@ class LibraryService {
         throw Exception('User not logged in.');
       }
       final docRef = _firestore
-          .collection('library')
+          .collection('users')
           .doc(userId)
-          .collection('mangas')
+          .collection('library')
           .doc(mangaId.toString());
 
       await docRef.update({'status': status.toString().split('.').last});
@@ -66,9 +70,9 @@ class LibraryService {
         throw Exception('User not logged in.');
       }
       final docRef = _firestore
-          .collection('library')
+          .collection('users')
           .doc(userId)
-          .collection('mangas')
+          .collection('library')
           .doc(mangaId.toString());
 
       await docRef.delete();
