@@ -96,6 +96,7 @@ class MangaDetailModel extends MangaModel {
   final String genres;
   final String themes;
   final String demographics;
+  final int? chapters;
 
   MangaDetailModel({
     required super.id,
@@ -112,6 +113,7 @@ class MangaDetailModel extends MangaModel {
     required this.genres,
     required this.themes,
     required this.demographics,
+    this.chapters,
   });
 
   factory MangaDetailModel.fromJson(Map<String, dynamic> json) {
@@ -142,6 +144,7 @@ class MangaDetailModel extends MangaModel {
       genres: genreNames.join(', '),
       themes: themeNames.join(', '),
       demographics: demographicNames.join(', '),
+      chapters: json['chapters'] as int?,
     );
   }
 }

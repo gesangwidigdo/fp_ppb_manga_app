@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/components/add_review.dart';
+import 'package:fp_ppb_manga_app/models/library_model.dart';
 import 'package:fp_ppb_manga_app/models/manga_model.dart';
+import 'package:fp_ppb_manga_app/pages/add_to_collection.dart';
+import 'package:fp_ppb_manga_app/services/library_service.dart';
 import 'package:fp_ppb_manga_app/services/manga_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -265,7 +269,12 @@ class _MangaDetailState extends State<MangaDetail> {
                                       itemWidth: itemWidth,
                                       icon: Icons.star,
                                       onPressed: () {
-                                        debugPrint('Review button pressed for ${manga.title}');
+                                        showAddReviewDialog(
+                                          context,
+                                          id: manga.id,
+                                          title: manga.title,
+                                          imageUrl: manga.imageUrl,
+                                        );
                                       },
                                     ),
                                     const SizedBox(width: 8.0),
@@ -273,7 +282,29 @@ class _MangaDetailState extends State<MangaDetail> {
                                       itemWidth: itemWidth,
                                       icon: Icons.local_library,
                                       onPressed: () async {
-                                        debugPrint('Library button pressed for ${manga.title}');
+                                        final libraryService = LibraryService();
+                                        final currentUserId = libraryService.currentUserId;
+                                        
+                                        if (currentUserId == null) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'You must be logged in to add to library.',
+                                              ),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                          return;
+                                        }
+                                        
+                                        final mangaLib = MangaLibraryModel(
+                                          id: manga.id,
+                                          title: manga.title,
+                                          imageUrl: manga.imageUrl,
+                                          score: manga.score,
+                                        );
+                                        
+                                        await libraryService.addMangaToLibrary(manga: mangaLib);
                                       },
                                     ),
                                     const SizedBox(width: 8.0),
@@ -281,7 +312,18 @@ class _MangaDetailState extends State<MangaDetail> {
                                       itemWidth: itemWidth,
                                       icon: Icons.bookmark,
                                       onPressed: () {
-                                        debugPrint('Bookmark button pressed for ${manga.title}');
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => AddToCollection(
+                                              mangaId: manga.id,
+                                              mangaTitle: manga.title,
+                                              mangaImageUrl: manga.imageUrl,
+                                              mangaChapters: manga.chapters,
+                                              mangaScore: manga.score,
+                                            ),
+                                          ),
+                                        );
                                       },
                                     ),
                                   ],
