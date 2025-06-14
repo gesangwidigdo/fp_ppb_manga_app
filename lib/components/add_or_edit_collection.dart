@@ -4,7 +4,7 @@ import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<void> showAddOrEditCollectionDialog(
+Future<bool?> showAddOrEditCollectionDialog(
   BuildContext context, {
   String? collectionId,
   String? currentName,
@@ -100,7 +100,7 @@ Future<void> showAddOrEditCollectionDialog(
                       initialManga: initialManga,
                     );
                     if (initialManga != null) {
-                      Navigator.pop(context);
+                      Navigator.of(context).pop(true);
                     }
                      ScaffoldMessenger.of(context).showSnackBar(
                       CustomSnackBar(
@@ -109,7 +109,7 @@ Future<void> showAddOrEditCollectionDialog(
                       ),
                     );
                   }
-                  Navigator.pop(context);
+                  Navigator.of(context).pop(true);
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

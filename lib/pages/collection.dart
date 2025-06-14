@@ -63,8 +63,11 @@ class _CollectionPageState extends State<CollectionPage> {
               onPressed: () async {
                 await showAddOrEditCollectionDialog(
                   context,
-                );
-                _fetchCollections();
+                ).then((value) {
+                  if (value == true) {
+                    _fetchCollections();
+                  }
+                });
               },
             ),
           ),

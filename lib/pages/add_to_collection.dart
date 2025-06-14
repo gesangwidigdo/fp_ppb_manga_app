@@ -51,8 +51,11 @@ class _AddToCollectionState extends State<AddToCollection> {
           imageUrl: widget.mangaImageUrl
         ),
       mangaTitle: widget.mangaTitle,
-    );
-    _fetchCollections();
+    ).then((value) {
+      if (value == true) {
+        _fetchCollections();
+      }
+    });
   }
 
   Future<void> _addMangaToExistingCollection(

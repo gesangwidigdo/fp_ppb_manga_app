@@ -227,8 +227,9 @@ class CollectionList extends StatelessWidget {
                         context,
                         collectionId: collection.id,
                         currentName: collection.name,
-                      );
-                      updateState?.call();
+                      ).then((value) {
+                        value! ? updateState?.call() : null;  
+                      });
                     },
                     child: Text(
                       'Edit',
@@ -238,15 +239,14 @@ class CollectionList extends StatelessWidget {
                     )
                   ),
                   PopupMenuItem(
-                    onTap: () {
-                      final result = showConfirmationDialog(
+                    onTap: () async {
+                      await showConfirmationDialog(
                         context,
                         upperText: 'Delete Collection',
                         bottomText: 'Are you sure you want to delete "${collection.name}"?',
                         isDelete: true,
                         confirmText: 'Delete',
-                      );
-                      result.then((value) async {
+                      ).then((value) async {
                         if (value == true) {
                           await CollectionService().deleteCollection(collection.id);
                           ScaffoldMessenger.of(context).showSnackBar(
