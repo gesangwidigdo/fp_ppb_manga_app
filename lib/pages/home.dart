@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
     final imageHeight = itemWidth * 1.42;
-    final totalItemHeight = imageHeight * (MediaQuery.of(context).size.height / 690.9);
+    final totalItemHeight = imageHeight * 1.25;
 
     return Scaffold(
       backgroundColor: Color(0xFF202939),
