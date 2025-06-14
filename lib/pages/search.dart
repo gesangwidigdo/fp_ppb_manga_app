@@ -19,7 +19,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   late FocusNode _searchFocusNode;
-  Future<List<MangaModel>>? _searchFuture;
+  Future<List<FullMangaModel>>? _searchFuture;
   final MangaService _mangaService = MangaService();
 
   @override
@@ -41,7 +41,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildSearchResults() {
-    return FutureBuilder<List<MangaModel>>(
+    return FutureBuilder<List<FullMangaModel>>(
       future: _searchFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -73,9 +73,7 @@ class _SearchPageState extends State<SearchPage> {
             final res = results[i];
             return widget.currentIndex == 0 ? SearchResult(
               currentIndex: widget.currentIndex,
-              id: res.id,
-              name: res.title,
-              imageUrl: res.imageUrl,
+              manga: res,
             ) : null ;
           },
         );
@@ -107,9 +105,8 @@ class _SearchPageState extends State<SearchPage> {
                   color: Colors.white70,
                 ),
                 hintText: 'Search...',
-                hintStyle: TextStyle(
+                hintStyle: GoogleFonts.montserrat(
                   color: Colors.white70,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 ),
                 filled: true,
                 fillColor: const Color(0xFF2A2E3D),
@@ -143,9 +140,8 @@ class _SearchPageState extends State<SearchPage> {
               },
               child: Text(
                 'Cancel',
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 )
               ),
             ),
@@ -163,9 +159,8 @@ class _SearchPageState extends State<SearchPage> {
         ) : (widget.currentIndex == 0 ? _buildSearchResults() : Center(
           child: Text(
             'Search results will appear here',
-            style: TextStyle(
+            style: GoogleFonts.montserrat(
               color: Colors.white70,
-              fontFamily: GoogleFonts.montserrat().fontFamily,
             ),
           ),
         ))

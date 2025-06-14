@@ -26,15 +26,13 @@ class AuthInput extends StatelessWidget {
     return TextField(
       controller: _inputController,
       obscureText: _obscureText,
-      style: TextStyle(
+      style: GoogleFonts.montserrat(
         color: Colors.white,
-        fontFamily: GoogleFonts.montserrat().fontFamily,
       ),
       decoration: InputDecoration(
         labelText: _labelText,
-        labelStyle: TextStyle(
+        labelStyle: GoogleFonts.montserrat(
           color: Colors.white70,
-          fontFamily: GoogleFonts.montserrat().fontFamily,
         ),
         filled: true,
         fillColor: const Color(0xFF2A2E3D),

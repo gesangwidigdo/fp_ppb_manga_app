@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<void> showAddReviewDialog(
+Future<bool?> showAddReviewDialog(
   BuildContext context, {
   required int id,
   required String title,
@@ -28,11 +28,10 @@ Future<void> showAddReviewDialog(
             backgroundColor: Color(0xFF202939),
             title: Text(
               isEdit ? 'Edit Rate & Review' : 'Rate & Review',
-              style: TextStyle(
+              style: GoogleFonts.montserrat(
                 color: Colors.white,
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
-                fontFamily: GoogleFonts.montserrat().fontFamily,
               ),
             ),
             content: Column(
@@ -51,11 +50,10 @@ Future<void> showAddReviewDialog(
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     color: Colors.white,
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                 ),
                 const SizedBox(height: 12.0),
@@ -96,17 +94,15 @@ Future<void> showAddReviewDialog(
                 ),
                 const SizedBox(height: 12.0),
                 TextField(
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                   controller: reviewController,
                   maxLines: 4,
                   decoration: InputDecoration(
                     hintText: 'Write your review…',
-                    hintStyle: TextStyle(
+                    hintStyle: GoogleFonts.montserrat(
                       color: Color(0x7FFFFFFF),
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                     filled: true,
                     fillColor: const Color(0xFF2A2E3D),
@@ -134,13 +130,12 @@ Future<void> showAddReviewDialog(
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(false);
                 },
                 child: Text(
                   'Cancel',
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                 ),
               ),
@@ -165,13 +160,13 @@ Future<void> showAddReviewDialog(
                     rating: rating.toInt(),
                     review: reviewController.text.trim(),
                   );
-                  Navigator.of(context).pop();
+                  debugPrint('Rating: $rating');
+                  Navigator.of(context).pop(true);
                 },
                 child: Text(
                   isEdit ? 'Update' : 'Submit',
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                 ),
               ),

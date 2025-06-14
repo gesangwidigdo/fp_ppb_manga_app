@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
 
 class CollectionService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -16,8 +17,10 @@ class CollectionService {
 
     try {
       final snapshot = await _firestore
-          .collection('collections')
-          .where('userId', isEqualTo: userId)
+          .collection('users')
+          .doc(userId)
+          .collection('collection')
+          .orderBy('createdAt', descending: true)
           .get();
 
       final List<CollectionModel> collections = snapshot.docs
@@ -31,7 +34,7 @@ class CollectionService {
     }
   }
 
-  Future<CollectionModel> createCollection(String name, {MangaInCollectionModel? initialManga}) async {
+  Future<CollectionModel> createCollection(String name, {FullMangaModel? initialManga}) async {
     final userId = currentUserId;
     if (userId == null) {
       throw Exception('User not logged in.');
@@ -40,31 +43,31 @@ class CollectionService {
     try {
       List<Map<String, dynamic>> mangas = [];
       if (initialManga != null) {
-        mangas.add(initialManga.toMap());
+        mangas.add(initialManga.toMapCollection());
       }
 
-      final docRef = await _firestore.collection('collections').add({
+      final docRef = await _firestore.collection('users').doc(userId).collection('collection').add({
         'name': name,
         'mangas': mangas,
-        'userId': userId,
         'createdAt': FieldValue.serverTimestamp(),
       });
       return CollectionModel(
-          id: docRef.id,
-          name: name,
-          mangas: initialManga != null ? [initialManga] : [],
-          userId: userId);
+        id: docRef.id,
+        name: name,
+        mangas: initialManga != null ? [initialManga] : [],
+      );
     } catch (e) {
       print('Error creating collection: $e');
       throw Exception('Failed to create collection');
     }
   }
 
-  Future<void> addMangaToCollection(String collectionId, MangaInCollectionModel manga) async {
+  Future<void> addMangaToCollection(String collectionId, FullMangaModel manga) async {
+    final userId = currentUserId;
     try {
-      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      final collectionRef = _firestore.collection('users').doc(userId).collection('collection').doc(collectionId);
       await collectionRef.update({
-        'mangas': FieldValue.arrayUnion([manga.toMap()]),
+        'mangas': FieldValue.arrayUnion([manga.toMapCollection()]),
       });
     } catch (e) {
       print('Error adding manga to collection: $e');
@@ -73,8 +76,9 @@ class CollectionService {
   }
 
   Future<void> removeMangaFromCollection(String collectionId, int mangaId) async {
+    final userId = currentUserId;
     try {
-      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      final collectionRef = _firestore.collection('users').doc(userId).collection('collection').doc(collectionId);
       final doc = await collectionRef.get();
       if (doc.exists) {
         final List<dynamic> mangas = doc.data()?['mangas'] ?? [];
@@ -88,8 +92,9 @@ class CollectionService {
   }
 
   Future<void> updateCollectionName(String collectionId, String newName) async {
+    final userId = currentUserId;
     try {
-      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      final collectionRef = _firestore.collection('users').doc(userId).collection('collection').doc(collectionId);
       await collectionRef.update({'name': newName});
     } catch (e) {
       print('Error updating collection name: $e');
@@ -98,8 +103,9 @@ class CollectionService {
   }
 
   Future<void> deleteCollection(String collectionId) async {
+    final userId = currentUserId;
     try {
-      final collectionRef = _firestore.collection('collections').doc(collectionId);
+      final collectionRef = _firestore.collection('users').doc(userId).collection('collection').doc(collectionId);
       await collectionRef.delete();
     } catch (e) {
       print('Error deleting collection: $e');

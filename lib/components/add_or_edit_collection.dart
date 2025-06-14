@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:fp_ppb_manga_app/models/collection_model.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<void> showAddOrEditCollectionDialog(
+Future<bool?> showAddOrEditCollectionDialog(
   BuildContext context, {
-  required Function onConfirm,
   String? collectionId,
   String? currentName,
-  MangaInCollectionModel? initialManga,
+  FullMangaModel? initialManga,
   String? mangaTitle,
 }) {
   final bool isEditMode = collectionId != null;
@@ -27,20 +27,22 @@ Future<void> showAddOrEditCollectionDialog(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
         title: Text(
           isEditMode ? 'Edit Collection Name' : 'New Collection',
-          style: TextStyle(
-              color: Colors.white, fontFamily: GoogleFonts.montserrat().fontFamily),
+          style: GoogleFonts.montserrat(
+            color: Colors.white
+          ),
         ),
         content: Form(
           key: formKey,
           child: TextFormField(
             controller: nameController,
-            style: TextStyle(
-                color: Colors.white, fontFamily: GoogleFonts.montserrat().fontFamily),
+            style: GoogleFonts.montserrat(
+              color: Colors.white
+            ),
             decoration: InputDecoration(
               hintText: 'Collection name',
-              hintStyle: TextStyle(
-                  color: Colors.white70,
-                  fontFamily: GoogleFonts.montserrat().fontFamily),
+              hintStyle: GoogleFonts.montserrat(
+                color: Colors.white70
+              ),
               filled: true,
               fillColor: const Color(0xFF2A2E3D),
               border: OutlineInputBorder(
@@ -59,25 +61,38 @@ Future<void> showAddOrEditCollectionDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel',
-                style: TextStyle(
-                    color: Colors.white70,
-                    fontFamily: GoogleFonts.montserrat().fontFamily)),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.montserrat(
+                color: Colors.white
+              )
+            ),
           ),
           ElevatedButton(
             style:
-                ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1D4ED7)),
+                ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  backgroundColor: const Color(0xFF1D4ED7)
+                ),
             onPressed: () async {
               if (formKey.currentState!.validate()) {
                 final String newName = nameController.text.trim();
                 try {
                   if (isEditMode) {
                     await collectionService.updateCollectionName(
-                        collectionId!, newName);
+                        collectionId, newName);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text('Collection name updated!'),
-                          backgroundColor: Colors.green),
+                      CustomSnackBar(
+                        message: 'Collection name updated to "$newName"',
+                        isSuccess: true,
+                      ),
                     );
                   } else {
                     await collectionService.createCollection(
@@ -85,16 +100,16 @@ Future<void> showAddOrEditCollectionDialog(
                       initialManga: initialManga,
                     );
                     if (initialManga != null) {
-                      Navigator.pop(context);
+                      Navigator.of(context).pop(true);
                     }
                      ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text('Collection "$newName" created!'),
-                          backgroundColor: Colors.green),
+                      CustomSnackBar(
+                        message: 'Collection "$newName" created successfully',
+                        isSuccess: true,
+                      ),
                     );
                   }
-                  Navigator.pop(context);
-                  onConfirm();
+                  Navigator.of(context).pop(true);
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -105,9 +120,10 @@ Future<void> showAddOrEditCollectionDialog(
               }
             },
             child: Text(isEditMode ? 'Save' : 'Create',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: GoogleFonts.montserrat().fontFamily)),
+            style: GoogleFonts.montserrat(
+                color: Colors.white,
+              )
+            ),
           ),
         ],
       );

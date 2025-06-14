@@ -82,15 +82,13 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 48.0),
               TextField(
                 controller: _emailController,
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 ),
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  labelStyle: TextStyle(
+                  labelStyle: GoogleFonts.montserrat(
                     color: Colors.white70,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                   filled: true,
                   fillColor: const Color(0xFF2A2E3D),
@@ -113,15 +111,13 @@ class _LoginPageState extends State<LoginPage> {
               TextField(
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 ),
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  labelStyle: TextStyle(
+                  labelStyle: GoogleFonts.montserrat(
                     color: Colors.white70,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                   filled: true,
                   fillColor: const Color(0xFF2A2E3D),
@@ -158,9 +154,8 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: Text(
                     'Forgot password?',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Colors.white70,
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                       fontSize: 12.0,
                     ),
                   ),
@@ -182,11 +177,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: Text(
                         'Sign In',
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontFamily: GoogleFonts.montserrat().fontFamily,
                         ),
                       ),
                     ),
@@ -195,9 +189,8 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Text(
                     'Error: $_errorCode',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Colors.red,
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -208,9 +201,8 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     'Don\'t have an account?',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Colors.white70,
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                   ),
                   TextButton(
@@ -219,9 +211,8 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: Text(
                       'Sign up here',
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: const Color(0xFF1D4ED7),
-                        fontFamily: GoogleFonts.montserrat().fontFamily,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

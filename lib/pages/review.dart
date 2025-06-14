@@ -56,7 +56,7 @@ class _ReviewPageState extends State<ReviewPage> {
         return ReviewedManga(
           id: r.id,
           title: r.title,
-          imageUrl: r.imageUrl ?? '',
+          imageUrl: r.imageUrl,
           rating: r.rating.toDouble(),
           review: r.review,
           updateState: _loadReviews,
@@ -90,11 +90,10 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
         title: Text(
           'Review',
-          style: TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 24,
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
           ),
         ),
       ),

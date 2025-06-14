@@ -7,13 +7,13 @@ class ReviewService {
 
   Future<List<ReviewedMangaModel>> fetchAllReviews() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    final snapshot = await _firestore.collection('users').doc(uid).collection('review').get();
+    final snapshot = await _firestore.collection('users').doc(uid).collection('review').orderBy('createdAt', descending: true).get();
     return snapshot.docs.map((doc) {
       final data = doc.data();
       return ReviewedMangaModel(
         id: data['id'] as int,
         title: data['title'] as String,
-        imageUrl: data['imageUrl'] as String?,
+        imageUrl: data['imageUrl'] as String,
         rating: data['rating'] as int,
         review: data['review'] as String,
       );
@@ -35,6 +35,7 @@ class ReviewService {
       'imageUrl': imageUrl,
       'rating': rating,
       'review': review,
+      'createdAt': FieldValue.serverTimestamp(),
     });
   }
 

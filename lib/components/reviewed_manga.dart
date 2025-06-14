@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_review.dart';
-import 'package:fp_ppb_manga_app/components/delete_confirmation.dart';
+import 'package:fp_ppb_manga_app/components/confirmation.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
+import 'package:fp_ppb_manga_app/components/show_more.dart';
 import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,11 +41,10 @@ class ReviewedManga extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -58,10 +59,9 @@ class ReviewedManga extends StatelessWidget {
                   const SizedBox(width: 4.0),
                   Text(
                     '${rating.toInt().toString()} / 10',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontSize: 14,
                       color: Colors.white,
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                   ),
                 ]
@@ -70,6 +70,7 @@ class ReviewedManga extends StatelessWidget {
           ),
           const SizedBox(height: 8.0),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
@@ -84,79 +85,77 @@ class ReviewedManga extends StatelessWidget {
               Expanded(
                 child: Text(
                   review,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 14,
                     color: Color(0x7FFFFFFF),
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                   maxLines: 6,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               const SizedBox(width: 8.0),
-              InkWell(
-                onTapDown: (TapDownDetails details) async {
-                  final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-                  await showMenu<String>(
-                    color: Color(0xFF181E2A),
-                    context: context,
-                    position: RelativeRect.fromRect(
-                      details.globalPosition & const Size(40, 40),
-                      Offset.zero & overlay.size,
-                    ),
-                    items: [
-                      PopupMenuItem(
-                        onTap: () async {
-                          await showAddReviewDialog(
-                            context,
-                            id: id,
-                            title: title,
-                            imageUrl: imageUrl,
-                            isEdit: true,
-                            initialRating: rating.toInt(),
-                            initialReview: review,
-                          );
+              ShowMore(
+                menuItems: [
+                  PopupMenuItem(
+                    onTap: () async {
+                      await showAddReviewDialog(
+                        context,
+                        id: id,
+                        title: title,
+                        imageUrl: imageUrl,
+                        isEdit: true,
+                        initialRating: rating.toInt(),
+                        initialReview: review,
+                      ).then((value) {
+                        if (value == true) {
                           updateState?.call();
-                        },
-                        child: Text(
-                          'Edit',
-                          style: TextStyle(
-                            color: Color(0xFFFFFFFF),
-                            fontFamily: GoogleFonts.montserrat().fontFamily,
-                          ),
-                        )
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
-                          final result = showDeleteDialog(
-                            context,
-                            upperText: 'Delete Review',
-                            bottomText: 'Are you sure you want to delete this review?',
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar(
+                              message: 'Review updated successfully!',
+                              isSuccess: true,
+                            ),
                           );
-                          result.then((value) async {
-                            if (value == true) {
-                              await ReviewService().deleteReview(id);
-                              updateState?.call();
-                            }
-                          });
-                        },
-                        child: Text(
-                          'Delete',
-                          style: TextStyle(
-                            color: Color(0xFFFFFFFF),
-                            fontFamily: GoogleFonts.montserrat().fontFamily,
-                          ),
-                        )
+                        }
+                      });
+                    },
+                    child: Text(
+                      'Edit',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFFFFFFF),
                       ),
-                    ],
-                  );
-                },
-                child: Icon(
-                  Icons.more_vert,
-                  size: 20,
-                  color: Color(0xFFB0B0B0), // Light gray color for arrow
-                ),
-              ),
+                    )
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      final result = showConfirmationDialog(
+                        context,
+                        upperText: 'Delete Review',
+                        bottomText: 'Are you sure you want to delete this review?',
+                        isDelete: true,
+                        confirmText: 'Delete',
+                      );
+                      result.then((value) async {
+                        if (value == true) {
+                          await ReviewService().deleteReview(id);
+                          updateState?.call();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar(
+                              message: 'Review deleted successfully!',
+                              isSuccess: true,
+                            )
+                          );
+                        }
+                      });
+                    },
+                    child: Text(
+                      'Delete',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    )
+                  ),
+                ],
+              )
             ],
           ),
         ]

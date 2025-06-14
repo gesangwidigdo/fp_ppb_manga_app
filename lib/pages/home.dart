@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fp_ppb_manga_app/components/home_manga.dart';
+import 'package:fp_ppb_manga_app/components/full_manga.dart';
 import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/services/manga_service.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<List<TopMangaModel>> _topMangaFuture;
+  late Future<List<FullMangaModel>> _topMangaFuture;
 
   @override
   void initState() {
@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
     final imageHeight = itemWidth * 1.42;
-    final totalItemHeight = imageHeight * 1.2;
+    final totalItemHeight = imageHeight * 1.25;
 
     return Scaffold(
       backgroundColor: Color(0xFF202939),
@@ -44,16 +44,15 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
                   'Top Manga',
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontFamily: GoogleFonts.montserrat().fontFamily,
                   ),
                 ),
               ),
               const SizedBox(height: 20.0),
-              FutureBuilder<List<TopMangaModel>>(
+              FutureBuilder<List<FullMangaModel>>(
                 future: _topMangaFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -92,12 +91,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     itemBuilder: (context, index) {
                       final manga = mangas[index];
-                      return HomeManga(
-                        id: manga.id,
-                        title: manga.title,
-                        imageUrl: manga.imageUrl,
-                        chapters: manga.chapters,
-                        score: manga.score,
+                      return FullManga(
+                        manga: manga
                       );
                     },
                   );

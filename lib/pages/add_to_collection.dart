@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fp_ppb_manga_app/components/collection_list.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
+import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:fp_ppb_manga_app/components/add_or_edit_collection.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,14 +9,18 @@ import 'package:google_fonts/google_fonts.dart';
 class AddToCollection extends StatefulWidget {
   final int mangaId;
   final String mangaTitle;
-  final String? mangaImageUrl;
+  final String mangaImageUrl;
+  final int? mangaChapters;
+  final double? mangaScore;
 
   const AddToCollection({
-    Key? key,
+    super.key,
     required this.mangaId,
     required this.mangaTitle,
-    this.mangaImageUrl,
-  }) : super(key: key);
+    required this.mangaImageUrl,
+    this.mangaChapters,
+    this.mangaScore,
+  });
 
   @override
   State<AddToCollection> createState() => _AddToCollectionState();
@@ -40,41 +45,44 @@ class _AddToCollectionState extends State<AddToCollection> {
   Future<void> _handleNewCollection() async {
     await showAddOrEditCollectionDialog(
       context,
-      initialManga: MangaInCollectionModel(
+      initialManga: FullMangaModel(
           id: widget.mangaId,
           title: widget.mangaTitle,
-          imageUrl: widget.mangaImageUrl),
+          imageUrl: widget.mangaImageUrl,
+          chapters: widget.mangaChapters,
+          score: widget.mangaScore,
+        ),
       mangaTitle: widget.mangaTitle,
-      onConfirm: _fetchCollections,
-    );
+    ).then((value) {
+      if (value == true) {
+        _fetchCollections();
+      }
+    });
   }
 
   Future<void> _addMangaToExistingCollection(
       String collectionId, String collectionName) async {
     try {
-      final mangaToAdd = MangaInCollectionModel(
+      final mangaToAdd = FullMangaModel(
           id: widget.mangaId,
           title: widget.mangaTitle,
-          imageUrl: widget.mangaImageUrl);
+          imageUrl: widget.mangaImageUrl,
+          chapters: widget.mangaChapters,
+          score: widget.mangaScore,
+        );
       await _collectionService.addMangaToCollection(collectionId, mangaToAdd);
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Manga added to collection "$collectionName"!',
-            style: TextStyle(fontFamily: GoogleFonts.montserrat().fontFamily),
-          ),
-          backgroundColor: Colors.green,
+        CustomSnackBar(
+          message: 'Manga added to collection "$collectionName" successfully!',
+          isSuccess: true,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Failed to add manga to collection: $e',
-            style: TextStyle(fontFamily: GoogleFonts.montserrat().fontFamily),
-          ),
-          backgroundColor: Colors.red,
+        CustomSnackBar(
+          message: 'Failed to add manga to collection: $e',
+          isSuccess: false,
         ),
       );
     }
@@ -85,26 +93,29 @@ class _AddToCollectionState extends State<AddToCollection> {
     return Scaffold(
       backgroundColor: const Color(0xFF202939),
       appBar: AppBar(
-        leading: IconButton(
-          icon: Image.asset(
-            'assets/icons/left_arrow.png',
-            width: 24,
-            height: 24,
-          ),
-          onPressed: () {
+        leading: InkWell(
+          onTap: () {
             Navigator.pop(context);
           },
-        ),
-        title: Text(
-          'Add to collection',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-            fontFamily: GoogleFonts.montserrat().fontFamily,
+          highlightColor: Colors.transparent,
+          splashFactory: NoSplash.splashFactory,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24),
+            child: Image.asset(
+              'assets/icons/left_arrow.png',
+              width: 36,
+              height: 36,
+            ),
           ),
         ),
-        centerTitle: false,
+        title: Text(
+          'Add to Collection',
+          style: GoogleFonts.montserrat(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -122,11 +133,10 @@ class _AddToCollectionState extends State<AddToCollection> {
               ),
               child: Text(
                 'New collection',
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                 ),
               ),
             ),
@@ -151,9 +161,9 @@ class _AddToCollectionState extends State<AddToCollection> {
                   return Center(
                     child: Text(
                       'No collections found. Create a new one!',
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                           color: Colors.white70,
-                          fontFamily: GoogleFonts.montserrat().fontFamily),
+                      )
                     ),
                   );
                 }
@@ -167,44 +177,49 @@ class _AddToCollectionState extends State<AddToCollection> {
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 8.0),
-                      leading:
-                          CollectionList(imageUrls: collection.coverImageUrls),
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: collection.mangas.isNotEmpty ? Image.network(
+                          collection.mangas[0].imageUrl,
+                          width: 56,
+                          height: 56,
+                          fit: BoxFit.cover,
+                        ) : Icon(
+                          Icons.broken_image,
+                          color: Colors.white70,
+                          size: 56.0,
+                        ),
+                      ),
                       title: Text(
                         collection.name,
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                           color: Colors.white,
-                          fontFamily: GoogleFonts.montserrat().fontFamily,
                         ),
                       ),
                       subtitle: Text(
                         '${collection.mangas.length} manga', // Updated
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                           color: Colors.white70,
                           fontSize: 12,
-                          fontFamily: GoogleFonts.montserrat().fontFamily,
                         ),
                       ),
-                      trailing: mangaAlreadyInCollection
-                          ? const Icon(Icons.check_circle, color: Colors.green)
-                          : IconButton(
-                              icon: const Icon(Icons.add, color: Colors.white),
-                              onPressed: () => _addMangaToExistingCollection(
-                                  collection.id, collection.name),
-                            ),
+                      trailing: mangaAlreadyInCollection ? Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: const Icon(Icons.check_circle, color: Colors.green),
+                      ) : IconButton(
+                        icon: const Icon(Icons.add, color: Colors.white),
+                        onPressed: () => _addMangaToExistingCollection(
+                            collection.id, collection.name),
+                      ),
                       onTap: () {
                         if (!mangaAlreadyInCollection) {
                           _addMangaToExistingCollection(
                               collection.id, collection.name);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Manga already in collection "${collection.name}"!',
-                                style: TextStyle(
-                                    fontFamily:
-                                        GoogleFonts.montserrat().fontFamily),
-                              ),
-                              backgroundColor: Colors.orange,
+                            CustomSnackBar(
+                              message: 'Manga already in this collection!',
+                              isSuccess: false,
                             ),
                           );
                         }
