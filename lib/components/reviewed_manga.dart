@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_review.dart';
 import 'package:fp_ppb_manga_app/components/confirmation.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
 import 'package:fp_ppb_manga_app/components/show_more.dart';
 import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -105,8 +106,17 @@ class ReviewedManga extends StatelessWidget {
                         isEdit: true,
                         initialRating: rating.toInt(),
                         initialReview: review,
-                      );
-                      updateState?.call();
+                      ).then((value) {
+                        if (value == true) {
+                          updateState?.call();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar(
+                              message: 'Review updated successfully!',
+                              isSuccess: true,
+                            ),
+                          );
+                        }
+                      });
                     },
                     child: Text(
                       'Edit',
@@ -128,6 +138,12 @@ class ReviewedManga extends StatelessWidget {
                         if (value == true) {
                           await ReviewService().deleteReview(id);
                           updateState?.call();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar(
+                              message: 'Review deleted successfully!',
+                              isSuccess: true,
+                            )
+                          );
                         }
                       });
                     },

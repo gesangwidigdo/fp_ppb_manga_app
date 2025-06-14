@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/confirmation.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
 import 'package:fp_ppb_manga_app/components/full_manga.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/models/manga_model.dart';
@@ -41,16 +42,16 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
             _mangaList.removeWhere((manga) => manga.id == mangaId);
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Manga removed from collection.'),
-              backgroundColor: Colors.green,
+            CustomSnackBar(
+              message: 'Manga removed from collection successfully.',
+              isSuccess: true,
             ),
           );
         }).catchError((e) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to remove manga: $e'),
-              backgroundColor: Colors.red,
+            CustomSnackBar(
+              message: 'Failed to remove manga from collection: $e',
+              isSuccess: false,
             ),
           );
         });

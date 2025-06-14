@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
 import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -88,9 +89,10 @@ Future<void> showAddOrEditCollectionDialog(
                     await collectionService.updateCollectionName(
                         collectionId, newName);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text('Collection name updated!'),
-                          backgroundColor: Colors.green),
+                      CustomSnackBar(
+                        message: 'Collection name updated to "$newName"',
+                        isSuccess: true,
+                      ),
                     );
                   } else {
                     await collectionService.createCollection(
@@ -101,9 +103,10 @@ Future<void> showAddOrEditCollectionDialog(
                       Navigator.pop(context);
                     }
                      ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text('Collection "$newName" created!'),
-                          backgroundColor: Colors.green),
+                      CustomSnackBar(
+                        message: 'Collection "$newName" created successfully',
+                        isSuccess: true,
+                      ),
                     );
                   }
                   Navigator.pop(context);

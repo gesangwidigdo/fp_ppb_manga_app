@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_or_edit_collection.dart';
 import 'package:fp_ppb_manga_app/components/confirmation.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
 import 'package:fp_ppb_manga_app/components/show_more.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/pages/collection_detail.dart';
@@ -248,6 +249,12 @@ class CollectionList extends StatelessWidget {
                       result.then((value) async {
                         if (value == true) {
                           await CollectionService().deleteCollection(collection.id);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar(
+                              message: 'Collection deleted successfully!',
+                              isSuccess: true,
+                            ),
+                          );
                           updateState?.call();
                         }
                       });

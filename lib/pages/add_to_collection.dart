@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
 import 'package:fp_ppb_manga_app/models/collection_model.dart';
 import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/services/collection_service.dart';
@@ -67,22 +68,16 @@ class _AddToCollectionState extends State<AddToCollection> {
       await _collectionService.addMangaToCollection(collectionId, mangaToAdd);
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Manga added to collection "$collectionName"!',
-            style: GoogleFonts.montserrat(),
-          ),
-          backgroundColor: Colors.green,
+        CustomSnackBar(
+          message: 'Manga added to collection "$collectionName" successfully!',
+          isSuccess: true,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Failed to add manga to collection: $e',
-            style: GoogleFonts.montserrat(),
-          ),
-          backgroundColor: Colors.red,
+        CustomSnackBar(
+          message: 'Failed to add manga to collection: $e',
+          isSuccess: false,
         ),
       );
     }
@@ -217,12 +212,9 @@ class _AddToCollectionState extends State<AddToCollection> {
                               collection.id, collection.name);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Manga already in collection "${collection.name}"!',
-                                style: GoogleFonts.montserrat(),
-                              ),
-                              backgroundColor: Colors.orange,
+                            CustomSnackBar(
+                              message: 'Manga already in this collection!',
+                              isSuccess: false,
                             ),
                           );
                         }

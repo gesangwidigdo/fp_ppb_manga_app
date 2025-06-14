@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_review.dart';
 import 'package:fp_ppb_manga_app/components/confirmation.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
 import 'package:fp_ppb_manga_app/components/show_more.dart';
 import 'package:fp_ppb_manga_app/models/library_model.dart';
 import 'package:fp_ppb_manga_app/pages/manga_detail.dart';
@@ -149,19 +150,24 @@ class LibraryManga extends StatelessWidget {
           ShowMore(
             menuItems: [
               PopupMenuItem(
-                onTap: () {
-                  final result = showConfirmationDialog(
+                onTap: () async {
+                  await showConfirmationDialog(
                     context,
                     upperText: 'Delete Manga',
                     bottomText: 'Are you sure you want to delete "${manga.title}"?',
                     isDelete: true,
                     confirmText: 'Delete',
-                  );
-                  result.then((value) async {
+                  ).then((value) async {
                     if (value == true) {
                       final libraryService = LibraryService();
                       await libraryService.removeMangaFromLibrary(mangaId: manga.id);
                       updateState?.call(); 
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        CustomSnackBar(
+                          message: 'Manga deleted successfully!',
+                          isSuccess: true,
+                        ),
+                      );
                     }
                   });
                 },
@@ -173,13 +179,22 @@ class LibraryManga extends StatelessWidget {
                 )
               ),
               manga.status == ReadingStatus.completed ? PopupMenuItem(
-                onTap: () {
+                onTap: () async {
                   showAddReviewDialog(
                     context,
                     id: manga.id,
                     title: manga.title,
                     imageUrl: manga.imageUrl,
-                  );
+                  ).then((value) {
+                    if (value == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        CustomSnackBar(
+                          message: 'Review added successfully!',
+                          isSuccess: true,
+                        ),
+                      );
+                    }
+                  });
                 },
                 child: Text(
                   'Review',

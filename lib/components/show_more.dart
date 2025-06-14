@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/add_review.dart';
+import 'package:fp_ppb_manga_app/components/custom_snackbar.dart';
 import 'package:fp_ppb_manga_app/models/library_model.dart';
 import 'package:fp_ppb_manga_app/models/manga_model.dart';
 import 'package:fp_ppb_manga_app/pages/add_to_collection.dart';
@@ -76,6 +77,12 @@ class ShowMore extends StatelessWidget {
                     );
                     
                     await libraryService.addMangaToLibrary(manga: mangaLib);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      CustomSnackBar(
+                        message: 'Manga added to library successfully!',
+                        isSuccess: true,
+                      ),
+                    );
                   },
                   child: Text(
                     'Add to Library',
@@ -108,13 +115,22 @@ class ShowMore extends StatelessWidget {
                   ),
                 ),
                 PopupMenuItem(
-                  onTap: () {
-                    showAddReviewDialog(
+                  onTap: () async {
+                    await showAddReviewDialog(
                       context,
                       id: manga!.id,
                       title: manga!.title,
                       imageUrl: manga!.imageUrl,
-                    );
+                    ).then((value) {
+                      if (value == true) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          CustomSnackBar(
+                            message: 'Review added successfully!',
+                            isSuccess: true,
+                          )
+                        );
+                      }
+                    });
                   },
                   child: Text(
                     'Review',

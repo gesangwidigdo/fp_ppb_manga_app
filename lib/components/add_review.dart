@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<void> showAddReviewDialog(
+Future<bool?> showAddReviewDialog(
   BuildContext context, {
   required int id,
   required String title,
@@ -130,7 +130,7 @@ Future<void> showAddReviewDialog(
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(false);
                 },
                 child: Text(
                   'Cancel',
@@ -160,7 +160,8 @@ Future<void> showAddReviewDialog(
                     rating: rating.toInt(),
                     review: reviewController.text.trim(),
                   );
-                  Navigator.of(context).pop();
+                  debugPrint('Rating: $rating');
+                  Navigator.of(context).pop(true);
                 },
                 child: Text(
                   isEdit ? 'Update' : 'Submit',
