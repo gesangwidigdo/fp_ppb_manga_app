@@ -48,7 +48,9 @@ class _AddToCollectionState extends State<AddToCollection> {
       initialManga: FullMangaModel(
           id: widget.mangaId,
           title: widget.mangaTitle,
-          imageUrl: widget.mangaImageUrl
+          imageUrl: widget.mangaImageUrl,
+          chapters: widget.mangaChapters,
+          score: widget.mangaScore,
         ),
       mangaTitle: widget.mangaTitle,
     ).then((value) {
