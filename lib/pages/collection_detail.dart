@@ -61,7 +61,9 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final totalItemHeight = MediaQuery.of(context).size.height * 0.39;
+    final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
+    final imageHeight = itemWidth * 1.42;
+    final totalItemHeight = imageHeight * (MediaQuery.of(context).size.height / 690.9);
 
     return Scaffold(
       appBar: AppBar(
@@ -107,7 +109,7 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 16.0,
-                    mainAxisExtent: totalItemHeight,
+                    childAspectRatio: itemWidth / totalItemHeight,
                   ),
                   itemBuilder: (context, index) {
                     final manga = _mangaList[index];
