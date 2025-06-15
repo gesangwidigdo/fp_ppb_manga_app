@@ -22,9 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
-    final imageHeight = itemWidth * 1.42;
-    final totalItemHeight = imageHeight * 1.25;
+    final totalItemHeight = MediaQuery.of(context).size.height * 0.39;
 
     return Scaffold(
       backgroundColor: Color(0xFF202939),
@@ -85,9 +83,9 @@ class _HomePageState extends State<HomePage> {
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
+                      mainAxisExtent: totalItemHeight,
+                      mainAxisSpacing: 8.0,
                       crossAxisSpacing: 8.0,
-                      mainAxisSpacing: 16.0,
-                      childAspectRatio: itemWidth / totalItemHeight,
                     ),
                     itemBuilder: (context, index) {
                       final manga = mangas[index];
