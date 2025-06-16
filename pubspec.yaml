@@ -14,6 +14,8 @@ dependencies:
   firebase_auth: ^5.5.4
   google_fonts: ^6.2.1
   http: ^1.4.0
+  firebase_crashlytics: ^4.3.7
+  firebase_analytics: ^11.5.0
 
 dev_dependencies:
   flutter_test:
@@ -26,3 +28,4 @@ flutter:
 
   assets:
   - assets/icons/
+  - assets/images/

@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final double itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
     final double imageHeight = itemWidth * 1.42;
-    const double extraHeight = 57.8;
+    const double extraHeight = 65;
 
     final double totalItemHeight = imageHeight + extraHeight;
     final double childAspectRatio = itemWidth / totalItemHeight;

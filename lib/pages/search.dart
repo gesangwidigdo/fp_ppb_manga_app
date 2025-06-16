@@ -99,34 +99,39 @@ class _SearchPageState extends State<SearchPage> {
               autofocus: true,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.zero,
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.white70,
-                ),
-                hintText: 'Search...',
-                hintStyle: GoogleFonts.montserrat(
-                  color: Colors.white70,
-                ),
-                filled: true,
-                fillColor: const Color(0xFF2A2E3D),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Colors.white70),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Colors.white70),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Colors.white),
-                ),
+              contentPadding: EdgeInsets.zero,
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.white70,
+              ),
+              hintText: 'Search...',
+              hintStyle: GoogleFonts.montserrat(
+                color: Colors.white70,
+              ),
+              filled: true,
+              fillColor: const Color(0xFF2A2E3D),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.white70),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.white70),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
               ),
               onSubmitted: (query) {
-                if (query.trim().isNotEmpty) {
-                  setState(() => _searchFuture = _mangaService.searchManga(query));
-                }
+              if (query.trim().isEmpty) {
+                throw Exception('Search query cannot be empty');
+              } else {
+                final future = _mangaService.searchManga(query);
+                setState(() {
+                  _searchFuture = future;
+                });
+              }
               },
             ),
           ),
