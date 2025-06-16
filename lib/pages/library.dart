@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/library_manga.dart';
+import 'package:fp_ppb_manga_app/components/library_manga.dart';
 import 'package:fp_ppb_manga_app/models/library_model.dart';
 import 'package:fp_ppb_manga_app/services/library_service.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -77,35 +78,34 @@ class _LibraryPageState extends State<LibraryPage> {
               return Center(
                 child: Text(
                   'Error: ${snapshot.error}',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.red,
-                  ),
+                  style: GoogleFonts.montserrat(color: Colors.red),
                 ),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Center(
                 child: Text(
                   'No manga in library',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
-                  ),
+                  style: GoogleFonts.montserrat(color: Colors.white),
                 ),
               );
             }
-        
+
             final mangas = snapshot.data!;
             return ListView.separated(
               itemCount: mangas.length,
               physics: const ClampingScrollPhysics(),
-              separatorBuilder: (context, index) => const SizedBox(height: 16.0),
+              separatorBuilder:
+                  (context, index) => const SizedBox(height: 16.0),
               itemBuilder: (context, index) {
                 final manga = mangas[index];
                 return LibraryManga(
                   manga: manga,
-                  isOtherUser: widget.isOtherUser,
-                  updateState: () => setState(() {
-                    _libraryData = _libraryService.fetchLibrary(widget.isOtherUser ? widget.userId! : _libraryService.currentUserId!);
-                  }),
+                  updateState:
+                      () => setState(() {
+                        _libraryData = _libraryService.fetchLibrary(
+                          _libraryService.currentUserId!,
+                        );
+                      }),
                 );
               },
             );
