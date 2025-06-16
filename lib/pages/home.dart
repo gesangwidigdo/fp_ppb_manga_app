@@ -22,9 +22,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
-    final imageHeight = itemWidth * 1.42;
-    final totalItemHeight = imageHeight * (MediaQuery.of(context).size.height / 690.9);
+    final double itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
+    final double imageHeight = itemWidth * 1.42;
+    const double extraHeight = 57.8;
+
+    final double totalItemHeight = imageHeight + extraHeight;
+    final double childAspectRatio = itemWidth / totalItemHeight;
 
     return Scaffold(
       backgroundColor: Color(0xFF202939),
@@ -56,9 +59,7 @@ class _HomePageState extends State<HomePage> {
                 future: _topMangaFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   }
-                  
+
                   return GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: mangas.length,
@@ -87,13 +88,11 @@ class _HomePageState extends State<HomePage> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 8.0,
                       mainAxisSpacing: 16.0,
-                      childAspectRatio: itemWidth / totalItemHeight,
+                      childAspectRatio: childAspectRatio,
                     ),
                     itemBuilder: (context, index) {
                       final manga = mangas[index];
-                      return FullManga(
-                        manga: manga
-                      );
+                      return FullManga(manga: manga);
                     },
                   );
                 },

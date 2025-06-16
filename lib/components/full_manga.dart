@@ -8,11 +8,7 @@ class FullManga extends StatelessWidget {
   final FullMangaModel manga;
   final VoidCallback? onDelete;
 
-  const FullManga({
-    super.key,
-    required this.manga,
-    this.onDelete,
-  });
+  const FullManga({super.key, required this.manga, this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +20,10 @@ class FullManga extends StatelessWidget {
       width: itemWidth,
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) => MangaDetail(
-              id: manga.id
-            ),
-          ));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MangaDetail(id: manga.id)),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +43,9 @@ class FullManga extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  manga.chapters != null ? 'Chapters: ${manga.chapters}' : 'No Chapters',
+                  manga.chapters != null
+                      ? 'Chapters: ${manga.chapters}'
+                      : 'No Chapters',
                   style: GoogleFonts.montserrat(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -92,10 +89,7 @@ class FullManga extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                ShowMore(
-                  manga: manga,
-                  onDelete: onDelete,
-                )
+                ShowMore(manga: manga, onDelete: onDelete),
               ],
             ),
           ],
