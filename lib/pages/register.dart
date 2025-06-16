@@ -93,14 +93,17 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                height: 120,
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 200,
                 decoration: BoxDecoration(
                   color: Colors.white24,
                   borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                  image: AssetImage('assets/images/anyajojo1.jpeg'), 
+                  fit: BoxFit.cover,
+                  ),
                 ),
-                child: Icon(Icons.image, size: 80, color: Colors.white54),
-              ),
+                ),
               const SizedBox(height: 48.0),
               AuthInput(
                 inputController: _emailController,

@@ -66,19 +66,18 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+                Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 200,
                 decoration: BoxDecoration(
                   color: Colors.white24,
                   borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                  image: AssetImage('assets/images/anyajojo.jpeg'), 
+                  fit: BoxFit.cover,
+                  ),
                 ),
-                child: Icon(
-                  Icons.image,
-                  size: 80,
-                  color: Colors.white54,
                 ),
-              ),
               const SizedBox(height: 48.0),
               TextField(
                 controller: _emailController,
