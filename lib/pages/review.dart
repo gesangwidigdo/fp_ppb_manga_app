@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/reviewed_manga.dart';
 import 'package:fp_ppb_manga_app/models/review_model.dart';
@@ -5,7 +6,16 @@ import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ReviewPage extends StatefulWidget {
-  const ReviewPage({super.key});
+  final bool isOtherUser;
+  final String? username;
+  final String? userId;
+
+  const ReviewPage({
+    super.key,
+    this.isOtherUser = false,
+    this.username,
+    this.userId,
+  });
 
   @override
   State<ReviewPage> createState() => _ReviewPageState();
@@ -21,8 +31,9 @@ class _ReviewPageState extends State<ReviewPage> {
   }
 
   void _loadReviews() {
+    final uid = widget.isOtherUser ? widget.userId : FirebaseAuth.instance.currentUser!.uid;
     setState(() {
-      _reviewFuture = ReviewService().fetchAllReviews();
+      _reviewFuture = ReviewService().fetchAllReviews(uid!);
     });
   }
 
@@ -60,6 +71,7 @@ class _ReviewPageState extends State<ReviewPage> {
           rating: r.rating.toDouble(),
           review: r.review,
           updateState: _loadReviews,
+          isOtherUser: widget.isOtherUser,
         );
       },
       separatorBuilder: (context, index) => const Divider(
@@ -89,7 +101,7 @@ class _ReviewPageState extends State<ReviewPage> {
           ),
         ),
         title: Text(
-          'Review',
+          widget.isOtherUser ? '${widget.username}\'s Review' : 'Review',
           style: GoogleFonts.montserrat(
             fontSize: 24,
             fontWeight: FontWeight.w600,

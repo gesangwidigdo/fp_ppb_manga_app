@@ -6,7 +6,16 @@ import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CollectionPage extends StatefulWidget {
-  const CollectionPage({super.key});
+  final bool isOtherUser;
+  final String? username;
+  final String? userId;
+
+  const CollectionPage({
+    super.key,
+    this.isOtherUser = false,
+    this.username,
+    this.userId,
+  });
 
   @override
   State<CollectionPage> createState() => _CollectionPageState();
@@ -23,8 +32,9 @@ class _CollectionPageState extends State<CollectionPage> {
   }
 
   void _fetchCollections() {
+    final uid = widget.isOtherUser ? widget.userId : _collectionService.currentUserId;
     setState(() {
-      _collectionsFuture = _collectionService.fetchCollections();
+      _collectionsFuture = _collectionService.fetchCollections(uid!);
     });
   }
 
@@ -48,7 +58,7 @@ class _CollectionPageState extends State<CollectionPage> {
           ),
         ),
         title: Text(
-          'Collection',
+          widget.isOtherUser ? '${widget.username}\'s Collection' : 'Collection',
           style: GoogleFonts.montserrat(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -56,7 +66,7 @@ class _CollectionPageState extends State<CollectionPage> {
           ),
         ),
         actions: [
-          Padding(
+          widget.isOtherUser ? const SizedBox.shrink() : Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: IconButton(
               icon: const Icon(Icons.add, color: Colors.white, size: 28),
@@ -110,6 +120,7 @@ class _CollectionPageState extends State<CollectionPage> {
             itemBuilder: (context, index) {
               return CollectionList(
                 collection: collections[index],
+                isOtherUser: widget.isOtherUser,
                 updateState: _fetchCollections,
               );
             },

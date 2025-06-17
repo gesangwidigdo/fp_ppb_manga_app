@@ -6,9 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class FullManga extends StatelessWidget {
   final FullMangaModel manga;
+  final bool isOtherUser;
   final VoidCallback? onDelete;
 
-  const FullManga({super.key, required this.manga, this.onDelete});
+  const FullManga({super.key, required this.manga, this.isOtherUser = false, this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +90,7 @@ class FullManga extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                ShowMore(manga: manga, onDelete: onDelete),
+                isOtherUser ? const SizedBox.shrink() : ShowMore(manga: manga, onDelete: onDelete),
               ],
             ),
           ],

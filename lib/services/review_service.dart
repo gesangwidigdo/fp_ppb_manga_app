@@ -5,8 +5,7 @@ import 'package:fp_ppb_manga_app/models/review_model.dart';
 class ReviewService {
   final _firestore = FirebaseFirestore.instance;
 
-  Future<List<ReviewedMangaModel>> fetchAllReviews() async {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
+  Future<List<ReviewedMangaModel>> fetchAllReviews(String uid) async {
     final snapshot = await _firestore.collection('users').doc(uid).collection('review').orderBy('createdAt', descending: true).get();
     return snapshot.docs.map((doc) {
       final data = doc.data();

@@ -12,6 +12,7 @@ class ReviewedManga extends StatelessWidget {
   final String imageUrl;
   final double rating;
   final String review;
+  final bool isOtherUser;
   final VoidCallback? updateState;
 
   const ReviewedManga({
@@ -21,6 +22,7 @@ class ReviewedManga extends StatelessWidget {
     required this.imageUrl,
     required this.rating,
     required this.review,
+    this.isOtherUser = false,
     this.updateState,
   });
 
@@ -94,7 +96,7 @@ class ReviewedManga extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8.0),
-              ShowMore(
+              isOtherUser ? const SizedBox.shrink() : ShowMore(
                 menuItems: [
                   PopupMenuItem(
                     onTap: () async {

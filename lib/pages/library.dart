@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:fp_ppb_manga_app/components/ilbrary_manga.dart';
+import 'package:fp_ppb_manga_app/components/library_manga.dart';
 import 'package:fp_ppb_manga_app/models/library_model.dart';
 import 'package:fp_ppb_manga_app/services/library_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LibraryPage extends StatefulWidget {
-  const LibraryPage({super.key});
+  final bool isOtherUser;
+  final String? username;
+  final String? userId;
+
+  const LibraryPage({
+    super.key,
+    this.isOtherUser = false,
+    this.username,
+    this.userId,
+  });
 
   @override
   State<LibraryPage> createState() => _LibraryPageState();
@@ -18,7 +27,7 @@ class _LibraryPageState extends State<LibraryPage> {
   @override
   void initState() {
     super.initState();
-    final userId = _libraryService.currentUserId;
+    final userId = widget.isOtherUser ? widget.userId : _libraryService.currentUserId;
     if (userId == null) {
       Navigator.pushReplacementNamed(context, 'login');
       return;
@@ -46,7 +55,7 @@ class _LibraryPageState extends State<LibraryPage> {
           ),
         ),
         title: Text(
-          'Library',
+          widget.isOtherUser ? '${widget.username}\'s Library' : 'Library',
           style: GoogleFonts.montserrat(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -55,22 +64,6 @@ class _LibraryPageState extends State<LibraryPage> {
         ),
       ),
       backgroundColor: Color(0xFF202939),
-      // body: Padding(
-      //   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-      //   child: LibraryManga(
-      //     manga: MangaLibraryModel(
-      //       id: 1706,
-      //       title: 'JoJo\'s Bizarre Adventure Part 7: Steel Ball Run',
-      //       imageUrl: 'https://cdn.myanimelist.net/images/manga/3/179882.jpg',
-      //       score: 9.32,
-      //       status: ReadingStatus.ongoing,
-      //     ),
-      //     updateState: () => setState(() {
-      //       _libraryData = _libraryService.fetchLibrary(_libraryService.currentUserId!);
-      //     }
-      //     ),
-      //   ),
-      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
         child: FutureBuilder<List<MangaLibraryModel>>(
@@ -109,8 +102,9 @@ class _LibraryPageState extends State<LibraryPage> {
                 final manga = mangas[index];
                 return LibraryManga(
                   manga: manga,
+                  isOtherUser: widget.isOtherUser,
                   updateState: () => setState(() {
-                    _libraryData = _libraryService.fetchLibrary(_libraryService.currentUserId!);
+                    _libraryData = _libraryService.fetchLibrary(widget.isOtherUser ? widget.userId! : _libraryService.currentUserId!);
                   }),
                 );
               },

@@ -5,12 +5,10 @@ import 'package:fp_ppb_manga_app/pages/manga_detail.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchResult extends StatelessWidget {
-  final int currentIndex;
   final FullMangaModel manga;
 
   const SearchResult({
     super.key,
-    required this.currentIndex,
     required this.manga,
   });
 

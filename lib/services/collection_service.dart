@@ -9,11 +9,8 @@ class CollectionService {
 
   String? get currentUserId => _auth.currentUser?.uid;
 
-  Future<List<CollectionModel>> fetchCollections() async {
-    final userId = currentUserId;
-    if (userId == null) {
-      throw Exception('User not logged in.');
-    }
+  Future<List<CollectionModel>> fetchCollections(String uid) async {
+    final userId = uid;
 
     try {
       final snapshot = await _firestore

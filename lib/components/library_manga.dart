@@ -10,9 +10,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class LibraryManga extends StatelessWidget {
   final MangaLibraryModel manga;
+  final bool isOtherUser;
   final VoidCallback? updateState;
 
-  const LibraryManga({super.key, required this.manga, this.updateState});
+  const LibraryManga({super.key, required this.manga, this.isOtherUser = false, this.updateState});
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +94,7 @@ class LibraryManga extends StatelessWidget {
                       ),
                       const SizedBox(height: 16.0),
                       Container(
+                        alignment: Alignment.center,
                         height: 36,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8.0,
@@ -107,7 +109,13 @@ class LibraryManga extends StatelessWidget {
                                   : Color(0xFF4CAF50), // Completed
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                        child: DropdownButtonHideUnderline(
+                        child: isOtherUser ? Text(
+                          currentStatus,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ) : DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: currentStatus,
                             isDense: true,
@@ -165,7 +173,7 @@ class LibraryManga extends StatelessWidget {
               ],
             ),
           ),
-          ShowMore(
+          isOtherUser ? const SizedBox.shrink() : ShowMore(
             menuItems: [
               PopupMenuItem(
                 onTap: () async {

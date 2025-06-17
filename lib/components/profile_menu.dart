@@ -3,14 +3,16 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProfileMenu extends StatelessWidget {
   final String title;
-  final String description;
+  final int? titleFontSize;
+  final String? description;
   final IconData icon;
   final VoidCallback onTap;
   
   const ProfileMenu({
     super.key,
     required this.title,
-    required this.description,
+    this.titleFontSize = 16,
+    this.description,
     required this.icon,
     required this.onTap,
   });
@@ -42,20 +44,20 @@ class ProfileMenu extends StatelessWidget {
                   title,
                   style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: titleFontSize!.toDouble(),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  description,
+                description != null ? Text(
+                  description!,
                   style: GoogleFonts.montserrat(
                     color: Color(0x7FFFFFFF),
                     fontSize: 12,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                ),
+                ) : const SizedBox.shrink(),
               ],
             ),
           ),

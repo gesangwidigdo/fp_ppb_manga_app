@@ -19,7 +19,7 @@ class _RootPageState extends State<RootPage> {
   int _currentIndex = 0;
   final _pages = const [
     HomePage(),
-    HomePage(),
+    SearchPage(currentIndex: 1),
     ProfilePage(),
   ];
 
@@ -49,7 +49,7 @@ class _RootPageState extends State<RootPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading: _isSearching ? null : (_currentIndex == 2 ? InkWell(
+        leading: _isSearching ? null : (_currentIndex != 0 ? InkWell(
           onTap: () => setState(() => _currentIndex = 0),
           highlightColor: Colors.transparent,
           splashFactory: NoSplash.splashFactory,
@@ -119,7 +119,7 @@ class _RootPageState extends State<RootPage> {
               ),
             ),
           ),
-        ] : (_currentIndex != 2  ? [
+        ] : (_currentIndex == 0  ? [
           InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(

@@ -10,11 +10,13 @@ import 'package:fp_ppb_manga_app/services/collection_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CollectionList extends StatelessWidget {
+  final bool isOtherUser;
   final CollectionModel collection;
   final VoidCallback? updateState;
 
   const CollectionList({
     super.key,
+    this.isOtherUser = false,
     required this.collection,
     this.updateState,
   });
@@ -203,7 +205,27 @@ class CollectionList extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              ShowMore(
+              isOtherUser ? ShowMore(
+                menuItems: [
+                  PopupMenuItem(
+                    onTap: () async {
+                      await Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => CollectionDetailPage(
+                          collection: collection,
+                          isOtherUser: isOtherUser,
+                        ),
+                      ));
+                      updateState?.call();
+                    },
+                    child: Text(
+                      'Show Details',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    )
+                  )
+                ]
+              ) : ShowMore(
                 menuItems: [
                   PopupMenuItem(
                     onTap: () async {

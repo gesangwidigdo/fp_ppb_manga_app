@@ -38,7 +38,7 @@ class _AddToCollectionState extends State<AddToCollection> {
 
   void _fetchCollections() {
     setState(() {
-      _collectionsFuture = _collectionService.fetchCollections();
+      _collectionsFuture = _collectionService.fetchCollections(_collectionService.currentUserId!);
     });
   }
 

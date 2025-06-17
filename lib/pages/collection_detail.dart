@@ -9,8 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CollectionDetailPage extends StatefulWidget {
   final CollectionModel collection;
+  final bool isOtherUser;
 
-  const CollectionDetailPage({super.key, required this.collection});
+  const CollectionDetailPage({super.key, required this.collection, this.isOtherUser = false});
 
   @override
   State<CollectionDetailPage> createState() => _CollectionDetailPageState();
@@ -63,7 +64,10 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
   Widget build(BuildContext context) {
     final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
     final imageHeight = itemWidth * 1.42;
-    final totalItemHeight = imageHeight * (MediaQuery.of(context).size.height / 690.9);
+    const extraHeight = 65;
+
+    final totalItemHeight = imageHeight + extraHeight;
+    final childAspectRatio = itemWidth / totalItemHeight;
 
     return Scaffold(
       appBar: AppBar(
@@ -109,12 +113,13 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 16.0,
-                    childAspectRatio: itemWidth / totalItemHeight,
+                    childAspectRatio: childAspectRatio,
                   ),
                   itemBuilder: (context, index) {
                     final manga = _mangaList[index];
                     return FullManga(
                       manga: manga,   
+                      isOtherUser: widget.isOtherUser,
                       onDelete: () => _removeMangaFromCollection(manga.id),
                     );
                   },

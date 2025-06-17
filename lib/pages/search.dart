@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/search_result.dart';
-import 'package:fp_ppb_manga_app/models/manga_model.dart';
+import 'package:fp_ppb_manga_app/components/user_result.dart';
 import 'package:fp_ppb_manga_app/services/manga_service.dart';
+import 'package:fp_ppb_manga_app/services/user_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchPage extends StatefulWidget {
@@ -19,12 +20,16 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   late FocusNode _searchFocusNode;
-  Future<List<FullMangaModel>>? _searchFuture;
+  Future<List<dynamic>>? _searchFuture;
   final MangaService _mangaService = MangaService();
+  final UserService _userService = UserService();
 
   @override
   void initState() {
     super.initState();
+    if (widget.currentIndex == 1) {
+      _searchFuture = _userService.fetchAllUsers();
+    }
     _searchFocusNode = FocusNode();
     _searchFocusNode.addListener(() {
       if (!_searchFocusNode.hasFocus && _searchFuture != null) {
@@ -41,7 +46,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildSearchResults() {
-    return FutureBuilder<List<FullMangaModel>>(
+    return FutureBuilder<List<dynamic>>(
       future: _searchFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -68,13 +73,14 @@ class _SearchPageState extends State<SearchPage> {
           physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           itemCount: results.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 8.0),
+          separatorBuilder: (_, __) => widget.currentIndex == 0 ? const SizedBox(height: 8.0) : const SizedBox(height: 16.0),
           itemBuilder: (context, i) {
             final res = results[i];
             return widget.currentIndex == 0 ? SearchResult(
-              currentIndex: widget.currentIndex,
               manga: res,
-            ) : null ;
+            ) : UserResult(
+              user: res,
+            );
           },
         );
       },
@@ -85,7 +91,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
+      appBar: widget.currentIndex == 0 ? AppBar(
         centerTitle: false,
         titleSpacing: 0,
         automaticallyImplyLeading: false,
@@ -152,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
         ]
-      ),
+      ) : null,
       body: Container(
         color: const Color(0xFF202939),
         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -161,14 +167,7 @@ class _SearchPageState extends State<SearchPage> {
             'Enter a search term',
             style: TextStyle(color: Colors.white70),
           ),
-        ) : (widget.currentIndex == 0 ? _buildSearchResults() : Center(
-          child: Text(
-            'Search results will appear here',
-            style: GoogleFonts.montserrat(
-              color: Colors.white70,
-            ),
-          ),
-        ))
+        ) : _buildSearchResults()
       ),
     );
   }

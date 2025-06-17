@@ -22,12 +22,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
-    final double imageHeight = itemWidth * 1.42;
-    const double extraHeight = 65;
+    final itemWidth = MediaQuery.of(context).size.width * 0.5 - 24.0;
+    final imageHeight = itemWidth * 1.42;
+    const extraHeight = 65;
 
-    final double totalItemHeight = imageHeight + extraHeight;
-    final double childAspectRatio = itemWidth / totalItemHeight;
+    final totalItemHeight = imageHeight + extraHeight;
+    final childAspectRatio = itemWidth / totalItemHeight;
 
     return Scaffold(
       backgroundColor: Color(0xFF202939),
