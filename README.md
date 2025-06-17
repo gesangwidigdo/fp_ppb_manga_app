@@ -16,14 +16,31 @@ Otakulib merupakan aplikasi yang ditujukan kepada para pecinta manga untuk menyi
 - Search User -> User dapat melihat profil User lainnya yang sama-sama menggunakan aplikasi OtakuLib. Dengan mengunjungi profil seseorang, User tersebut dapat melihat koleksinya, library-nya, dan review yang pernah dibuat.
 
 ## Screenshots
+### Login Page
 ![alt text](<assets/images/screenshots/Screenshot 2025-06-17 202816.png>) 
+
+### Register Page
 ![alt text](<assets/images/screenshots/Screenshot 2025-06-17 202825.png>)
+
+### Main Page (List Manga)
 ![alt text](<assets/images/screenshots/Screenshot 2025-06-17 202229.png>) 
+
+### Search User
 ![alt text](<assets/images/screenshots/Screenshot 2025-06-17 202304.png>) 
+
+### Profile
 ![alt text](<assets/images/screenshots/Screenshot 2025-06-17 202728.png>) 
+
+### Collection
 ![alt text](<assets/images/screenshots/Screenshot 2025-06-17 202539.png>) 
+
+### Review User
 ![alt text](<assets/images/screenshots/Screenshot 2025-06-17 202553.png>) 
+
+### Library
 ![alt text](<assets/images/screenshots/Screenshot 2025-06-17 202619.png>) 
+
+### Search Manga
 ![alt text](<assets/images/screenshots/Screenshot 2025-06-17 202759.png>) 
 
 ## Kontribusi Anggota Kelompok
