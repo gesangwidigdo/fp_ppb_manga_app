@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fp_ppb_manga_app/models/manga_model.dart';
+import 'package:fp_ppb_manga_app/models/review_model.dart';
 
 class ReviewService {
   final _firestore = FirebaseFirestore.instance;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp_ppb_manga_app/components/reviewed_manga.dart';
-import 'package:fp_ppb_manga_app/models/manga_model.dart';
+import 'package:fp_ppb_manga_app/models/review_model.dart';
 import 'package:fp_ppb_manga_app/services/review_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
